@@ -7,7 +7,6 @@ import styles from './MainLayout.module.scss';
 export const MainLayout = () => (
   <Box direction="row" height={{ min: '100%' }}>
     <Sidebar
-      background="brand"
       header={
         <Box direction="row" gap="small" align="center">
           <Avatar src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80" />
