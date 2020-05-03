@@ -5,6 +5,7 @@ import LoginPage from './LoginPage';
 import MainLayout from './MainLayout';
 import { storage } from '../common/lib/storage';
 import { theme } from './theme';
+import { BrowserRouter } from 'react-router-dom';
 
 export const App = () => {
   const [state, setState] = useState({
@@ -16,11 +17,13 @@ export const App = () => {
   };
 
   return (
-    <AppContext.Provider value={{ account: state.account, setAccount }}>
-      <Grommet theme={theme} full>
-        {state.account ? <MainLayout /> : <LoginPage />}
-      </Grommet>
-    </AppContext.Provider>
+    <Grommet theme={theme} full>
+      <AppContext.Provider value={{ account: state.account, setAccount }}>
+        <BrowserRouter>
+          {state.account ? <MainLayout /> : <LoginPage />}
+        </BrowserRouter>
+      </AppContext.Provider>
+    </Grommet>
   );
 };
 
