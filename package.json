@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-plugin-relay": "^9.1.0",
+    "graphql": "^15.0.0",
     "grommet": "^2.13.0",
     "grommet-icons": "^4.4.0",
-    "grommet-theme-hpe": "^1.0.5",
     "node-sass": "^4.14.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-relay": "^9.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "relay-config": "^9.1.0",
     "styled-components": "^5.1.0",
     "typescript": "~3.7.2"
   },
@@ -18,17 +21,21 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/graphql": "^14.5.0",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "@types/react-router-dom": "^5.1.5"
+    "@types/react-relay": "^7.0.3",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/relay-runtime": "^8.0.9"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "get-schema": "graphql get-schema -e local"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "author": {
+    "name": "Aleksandr Shukletsov"
   }
 }

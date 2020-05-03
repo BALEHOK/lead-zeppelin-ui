@@ -1,0 +1,102 @@
+# source: http://localhost:5000/graphql
+# timestamp: Sun May 03 2020 18:24:09 GMT-0400 (Eastern Daylight Time)
+
+type ClientObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  created: DateTime!
+  updated: DateTime
+  name: String
+  email: String
+  phone: String
+  vk: String
+  fb: String
+  gc: String
+  accountId: String
+  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
+}
+
+type ClientObjectConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [ClientObjectEdge]!
+}
+
+"""A Relay edge containing a `ClientObject` and its cursor."""
+type ClientObjectEdge {
+  """The item at the end of the edge"""
+  node: ClientObject
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+type LeadObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  created: DateTime!
+  updated: DateTime
+  clientId: String
+  source: String
+  medium: String
+  campaign: String
+  content: String
+  funnelStepId: String
+  client: ClientObject
+}
+
+type LeadObjectConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [LeadObjectEdge]!
+}
+
+"""A Relay edge containing a `LeadObject` and its cursor."""
+type LeadObjectEdge {
+  """The item at the end of the edge"""
+  node: LeadObject
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object."""
+  id: ID!
+}
+
+"""
+The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
+"""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  """The ID of the object"""
+  node(id: ID!): Node
+  allLeads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
+  allClients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
+}
