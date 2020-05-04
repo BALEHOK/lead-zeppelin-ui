@@ -9,13 +9,33 @@ export const Clients = () => (
   <QueryRenderer
     environment={environment}
     query={graphql`
-      query ClientsQuery {
+      query ClientsScreenQuery {
         clients {
           edges {
             node {
               id
-              accountId
               name
+              email
+              leads {
+                edges {
+                  node {
+                    id
+                    source
+                    campaign
+                    funnelStep {
+                      name
+                    }
+                  }
+                }
+              }
+              payments {
+                edges {
+                  node {
+                    id
+                    amountPaid
+                  }
+                }
+              }
             }
           }
         }
@@ -31,12 +51,27 @@ export const Clients = () => (
         return <div>Loading...</div>;
       }
 
+      const clients = (props as any).clients.edges.map((e) => {
+        const client = { ...e.node };
+
+        const lead = { ...client.leads.edges[0]?.node };
+        if (lead) {
+          lead.funnelStep = lead.funnelStep?.name;
+        }
+        client.lead = lead;
+
+        client.amountPaid =
+          client.payments.edges
+            .map((e) => e.node.amountPaid)
+            .reduce((summ, cur) => summ + cur, 0) / 100;
+
+        return client;
+      });
+
       return (
         <div>
           <h1>Clients</h1>
-          <ClientsTable
-            clients={(props as any).clients.edges.map((e) => e.node)}
-          />
+          <ClientsTable clients={clients} />
         </div>
       );
     }}
