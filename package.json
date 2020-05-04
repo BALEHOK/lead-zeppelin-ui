@@ -28,14 +28,16 @@
     "@types/react-dom": "^16.9.0",
     "@types/react-relay": "^7.0.3",
     "@types/react-router-dom": "^5.1.5",
-    "@types/relay-runtime": "^8.0.9"
+    "@types/relay-runtime": "^8.0.9",
+    "relay-compiler": "^9.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "get-schema": "graphql get-schema -e local"
+    "gql-schema": "graphql get-schema -e local",
+    "gql-compile": "relay-compiler --extensions ts tsx"
   },
   "eslintConfig": {
     "extends": "react-app"

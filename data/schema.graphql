@@ -1,5 +1,5 @@
 # source: http://localhost:5000/graphql
-# timestamp: Sun May 03 2020 18:24:09 GMT-0400 (Eastern Daylight Time)
+# timestamp: Sun May 03 2020 21:13:03 GMT-0400 (Eastern Daylight Time)
 
 type ClientObject implements Node {
   """The ID of the object."""
@@ -14,6 +14,7 @@ type ClientObject implements Node {
   gc: String
   accountId: String
   leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
+  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
 }
 
 type ClientObjectConnection {
@@ -40,6 +41,87 @@ value as specified by
 """
 scalar DateTime
 
+type FunnelObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  name: String
+  accountId: String
+  steps(before: String, after: String, first: Int, last: Int): FunnelStepObjectConnection
+}
+
+type FunnelObjectConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [FunnelObjectEdge]!
+}
+
+"""A Relay edge containing a `FunnelObject` and its cursor."""
+type FunnelObjectEdge {
+  """The item at the end of the edge"""
+  node: FunnelObject
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type FunnelStepObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  name: String
+  code: String
+  funnelId: String
+  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
+  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
+  funnel: FunnelObject
+}
+
+type FunnelStepObjectConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [FunnelStepObjectEdge]!
+}
+
+"""A Relay edge containing a `FunnelStepObject` and its cursor."""
+type FunnelStepObjectEdge {
+  """The item at the end of the edge"""
+  node: FunnelStepObject
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type LeadFunnelStepHistoryObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  prevStepId: String
+  funnelStepId: String
+  leadId: String
+  changed: DateTime!
+}
+
+type LeadFunnelStepHistoryObjectConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [LeadFunnelStepHistoryObjectEdge]!
+}
+
+"""
+A Relay edge containing a `LeadFunnelStepHistoryObject` and its cursor.
+"""
+type LeadFunnelStepHistoryObjectEdge {
+  """The item at the end of the edge"""
+  node: LeadFunnelStepHistoryObject
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 type LeadObject implements Node {
   """The ID of the object."""
   id: ID!
@@ -51,6 +133,8 @@ type LeadObject implements Node {
   campaign: String
   content: String
   funnelStepId: String
+  funnelStep: FunnelStepObject
+  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
   client: ClientObject
 }
 
@@ -94,9 +178,44 @@ type PageInfo {
   endCursor: String
 }
 
+type PaymentObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  created: DateTime!
+  updated: DateTime
+  amountPaid: Int
+  clientId: String
+  leadId: String
+  funnelStepId: String
+  client: ClientObject
+  lead: LeadObject
+  funnelStep: FunnelStepObject
+}
+
+type PaymentObjectConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+
+  """Contains the nodes in this connection."""
+  edges: [PaymentObjectEdge]!
+}
+
+"""A Relay edge containing a `PaymentObject` and its cursor."""
+type PaymentObjectEdge {
+  """The item at the end of the edge"""
+  node: PaymentObject
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
 type Query {
   """The ID of the object"""
   node(id: ID!): Node
-  allLeads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
-  allClients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
+  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
+  clients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
+  funnels(before: String, after: String, first: Int, last: Int): FunnelObjectConnection
+  funnelSteps(before: String, after: String, first: Int, last: Int): FunnelStepObjectConnection
+  LeadFunnelStepHistories(before: String, after: String, first: Int, last: Int): LeadFunnelStepHistoryObjectConnection
+  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
 }
