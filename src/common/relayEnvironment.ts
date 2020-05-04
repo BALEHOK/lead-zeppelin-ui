@@ -1,6 +1,5 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 
-console.log('env', process.env);
 const apiUrl = `${process.env.REACT_APP_API_URL}/graphql`;
 
 function fetchQuery(operation, variables) {

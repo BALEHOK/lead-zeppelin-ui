@@ -17,3 +17,5 @@ export const ClientsTable = ({ clients }) => (
     data={clients}
   />
 );
+
+export default ClientsTable;

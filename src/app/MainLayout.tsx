@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box, Sidebar, Avatar, Button, Nav, Text } from 'grommet';
-import { Help, Projects, PowerCycle } from 'grommet-icons';
+import { Help, Projects, Group } from 'grommet-icons';
 import styles from './MainLayout.module.scss';
 import { routes } from './routes';
-import { Switch, Route, NavLink } from 'react-router-dom';
-import { Dashboard } from '../dashboard/Dashboard';
-import { Clients } from '../clients/Clients';
+import { Switch, Route } from 'react-router-dom';
+import { Dashboard } from '../dashboard/DashboardScreen';
+import { Clients } from '../clients/ClientsScreen';
+import SidebarItem from './SidebarItem';
 
 export const MainLayout = () => (
   <Box direction="row" height={{ min: '100%' }}>
@@ -28,22 +29,12 @@ export const MainLayout = () => (
       }
     >
       <Nav gap="small">
-        <Button
+        <SidebarItem
+          to={routes.dashboard}
           icon={<Projects />}
-          hoverIndicator
-          plain
-          gap="medium"
-          label="Projects"
+          label="Dashboard"
         />
-        <Button
-          icon={<PowerCycle />}
-          hoverIndicator
-          plain
-          gap="medium"
-          label="Glances"
-        />
-        <NavLink to={routes.dashboard}>Dashboard</NavLink>
-        <NavLink to={routes.clients}>Clients</NavLink>
+        <SidebarItem to={routes.clients} icon={<Group />} label="Clients" />
       </Nav>
     </Sidebar>
     <Box pad="medium" overflow="auto" className={styles.content}>

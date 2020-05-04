@@ -3,7 +3,7 @@ import React from 'react';
 import graphql from 'babel-plugin-relay/macro';
 import { QueryRenderer } from 'react-relay';
 import { environment } from '../common/relayEnvironment';
-import { ClientsTable } from './ClientsTable';
+import ClientsTable from './ClientsTable';
 
 export const Clients = () => (
   <QueryRenderer

@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import styles from './Dashboard.module.scss';
+import styles from './DashboardScreen.module.scss';
 
 export const Dashboard = () => (
   <>

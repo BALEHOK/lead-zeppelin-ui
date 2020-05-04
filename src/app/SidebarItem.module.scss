@@ -1,0 +1,26 @@
+@import './theme.module';
+
+.root {
+  color: $color-text-dark;
+  display: flex;
+  align-items: center;
+  padding: 7px;
+  justify-content: flex-start;
+  text-decoration: none;
+
+  &:hover {
+    box-shadow: inset 0 0 3px $color-focus;
+  }
+}
+
+.active {
+  background: $color-active;
+  cursor: default;
+  &:hover {
+    box-shadow: none;
+  }
+}
+
+.gap {
+  width: 24px;
+}

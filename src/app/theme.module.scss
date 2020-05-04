@@ -1,0 +1,29 @@
+$color-active: rgba(102, 102, 102, 0.5);
+$color-background: #282c34;
+$color-black: #000000;
+$color-brand: #fd6fff;
+$color-control-dark: #ffca58;
+$color-control-light: #403216;
+$color-focus: #ffca58;
+$color-icon-dark: #f8f8f8;
+$color-icon-light: #666666;
+$color-placeholder: #aaaaaa;
+$color-text-dark: #eeeeee;
+$color-text-light: #444444;
+$color-white: #ffffff;
+
+:export {
+  active: $color-active;
+  background: $color-background;
+  black: $color-black;
+  brand: $color-brand;
+  controlDark: $color-control-dark;
+  controlLight: $color-control-light;
+  focus: $color-focus;
+  iconDark: $color-icon-dark;
+  iconLight: $color-icon-light;
+  placeholder: $color-placeholder;
+  textDark: $color-text-dark;
+  textLight: $color-text-light;
+  white: $color-white;
+}
