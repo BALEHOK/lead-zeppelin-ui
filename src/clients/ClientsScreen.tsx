@@ -15,15 +15,6 @@ const ClientsScreen = () => (
             ...ClientsTable_clients
           }
         }
-        clients(first: 2147483647) {
-          edges {
-            node {
-              id
-              name
-              email
-            }
-          }
-        }
       }
     `}
     variables={{}}
