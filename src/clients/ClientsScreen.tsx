@@ -1,41 +1,26 @@
 import React from 'react';
-
 import graphql from 'babel-plugin-relay/macro';
 import { QueryRenderer } from 'react-relay';
 import { environment } from '../common/relayEnvironment';
 import ClientsTable from './ClientsTable';
 
-export const Clients = () => (
+const ClientsScreen = () => (
   <QueryRenderer
     environment={environment}
     query={graphql`
       query ClientsScreenQuery {
-        clients {
+        account {
+          id
+          clients(first: 2147483647) {
+            ...ClientsTable_clients
+          }
+        }
+        clients(first: 2147483647) {
           edges {
             node {
               id
               name
               email
-              leads {
-                edges {
-                  node {
-                    id
-                    source
-                    campaign
-                    funnelStep {
-                      name
-                    }
-                  }
-                }
-              }
-              payments {
-                edges {
-                  node {
-                    id
-                    amountPaid
-                  }
-                }
-              }
             }
           }
         }
@@ -51,29 +36,9 @@ export const Clients = () => (
         return <div>Loading...</div>;
       }
 
-      const clients = (props as any).clients.edges.map((e) => {
-        const client = { ...e.node };
-
-        const lead = { ...client.leads.edges[0]?.node };
-        if (lead) {
-          lead.funnelStep = lead.funnelStep?.name;
-        }
-        client.lead = lead;
-
-        client.amountPaid =
-          client.payments.edges
-            .map((e) => e.node.amountPaid)
-            .reduce((summ, cur) => summ + cur, 0) / 100;
-
-        return client;
-      });
-
-      return (
-        <div>
-          <h1>Clients</h1>
-          <ClientsTable clients={clients} />
-        </div>
-      );
+      return <ClientsTable clients={(props as any).account.clients} />;
     }}
   />
 );
+
+export default ClientsScreen;

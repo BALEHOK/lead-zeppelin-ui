@@ -5,7 +5,7 @@ import styles from './MainLayout.module.scss';
 import { routes } from './routes';
 import { Switch, Route } from 'react-router-dom';
 import { Dashboard } from '../dashboard/DashboardScreen';
-import { Clients } from '../clients/ClientsScreen';
+import ClientsScreen from '../clients/ClientsScreen';
 import SidebarItem from './SidebarItem';
 
 export const MainLayout = () => (
@@ -43,7 +43,7 @@ export const MainLayout = () => (
           <Dashboard />
         </Route>
         <Route path={routes.clients}>
-          <Clients />
+          <ClientsScreen />
         </Route>
       </Switch>
     </Box>

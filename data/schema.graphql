@@ -1,5 +1,16 @@
 # source: http://localhost:5000/graphql
-# timestamp: Sun May 03 2020 21:13:03 GMT-0400 (Eastern Daylight Time)
+# timestamp: Tue May 05 2020 23:56:02 GMT-0400 (Eastern Daylight Time)
+
+type AccountObject implements Node {
+  """The ID of the object."""
+  id: ID!
+  created: DateTime!
+  updated: DateTime
+  name: String
+  code: String
+  clients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
+  funnels(before: String, after: String, first: Int, last: Int): FunnelObjectConnection
+}
 
 type ClientObject implements Node {
   """The ID of the object."""
@@ -15,6 +26,7 @@ type ClientObject implements Node {
   accountId: String
   leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
   payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
+  account: AccountObject
 }
 
 type ClientObjectConnection {
@@ -47,6 +59,7 @@ type FunnelObject implements Node {
   name: String
   accountId: String
   steps(before: String, after: String, first: Int, last: Int): FunnelStepObjectConnection
+  account: AccountObject
 }
 
 type FunnelObjectConnection {
@@ -212,10 +225,11 @@ type PaymentObjectEdge {
 type Query {
   """The ID of the object"""
   node(id: ID!): Node
-  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
+  account: AccountObject
   clients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
+  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
   funnels(before: String, after: String, first: Int, last: Int): FunnelObjectConnection
   funnelSteps(before: String, after: String, first: Int, last: Int): FunnelStepObjectConnection
-  LeadFunnelStepHistories(before: String, after: String, first: Int, last: Int): LeadFunnelStepHistoryObjectConnection
+  leadFunnelStepHistories(before: String, after: String, first: Int, last: Int): LeadFunnelStepHistoryObjectConnection
   payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
 }
