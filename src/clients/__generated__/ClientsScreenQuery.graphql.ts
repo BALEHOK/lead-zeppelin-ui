@@ -11,15 +11,6 @@ export type ClientsScreenQueryResponse = {
             readonly " $fragmentRefs": FragmentRefs<"ClientsTable_clients">;
         } | null;
     } | null;
-    readonly clients: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-                readonly name: string | null;
-                readonly email: string | null;
-            } | null;
-        } | null>;
-    } | null;
 };
 export type ClientsScreenQuery = {
     readonly response: ClientsScreenQueryResponse;
@@ -34,15 +25,6 @@ query ClientsScreenQuery {
     id
     clients(first: 2147483647) {
       ...ClientsTable_clients
-    }
-  }
-  clients(first: 2147483647) {
-    edges {
-      node {
-        id
-        name
-        email
-      }
     }
   }
 }
@@ -100,49 +82,6 @@ v2 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "email",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": (v1/*: any*/),
-  "concreteType": "ClientObjectConnection",
-  "kind": "LinkedField",
-  "name": "clients",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "ClientObjectEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "ClientObject",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v0/*: any*/),
-            (v2/*: any*/),
-            (v3/*: any*/)
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
-  "storageKey": "clients(first:2147483647)"
 };
 return {
   "fragment": {
@@ -178,8 +117,7 @@ return {
           }
         ],
         "storageKey": null
-      },
-      (v4/*: any*/)
+      }
     ],
     "type": "Query"
   },
@@ -224,7 +162,13 @@ return {
                     "selections": [
                       (v0/*: any*/),
                       (v2/*: any*/),
-                      (v3/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "email",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -338,8 +282,7 @@ return {
           }
         ],
         "storageKey": null
-      },
-      (v4/*: any*/)
+      }
     ]
   },
   "params": {
@@ -347,9 +290,9 @@ return {
     "metadata": {},
     "name": "ClientsScreenQuery",
     "operationKind": "query",
-    "text": "query ClientsScreenQuery {\n  account {\n    id\n    clients(first: 2147483647) {\n      ...ClientsTable_clients\n    }\n  }\n  clients(first: 2147483647) {\n    edges {\n      node {\n        id\n        name\n        email\n      }\n    }\n  }\n}\n\nfragment ClientsTable_clients on ClientObjectConnection {\n  edges {\n    node {\n      id\n      name\n      email\n      leads {\n        edges {\n          node {\n            id\n            source\n            campaign\n            funnelStep {\n              name\n              id\n            }\n          }\n        }\n      }\n      payments {\n        edges {\n          node {\n            id\n            amountPaid\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query ClientsScreenQuery {\n  account {\n    id\n    clients(first: 2147483647) {\n      ...ClientsTable_clients\n    }\n  }\n}\n\nfragment ClientsTable_clients on ClientObjectConnection {\n  edges {\n    node {\n      id\n      name\n      email\n      leads {\n        edges {\n          node {\n            id\n            source\n            campaign\n            funnelStep {\n              name\n              id\n            }\n          }\n        }\n      }\n      payments {\n        edges {\n          node {\n            id\n            amountPaid\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = 'c9b1fb80fda091a5768b76c72cdd51ac';
+(node as any).hash = '06a03f2ae4f9d932fba6c2730267d427';
 export default node;
