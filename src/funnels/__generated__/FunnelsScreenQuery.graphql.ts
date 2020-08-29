@@ -3,13 +3,14 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FunnelsScreenQueryVariables = {};
+export type FunnelsScreenQueryVariables = {
+    code: string;
+};
 export type FunnelsScreenQueryResponse = {
     readonly account: {
-        readonly id: string;
-        readonly funnels: {
+        readonly funnels: ReadonlyArray<{
             readonly " $fragmentRefs": FragmentRefs<"Funnels_funnels">;
-        } | null;
+        } | null> | null;
     } | null;
 };
 export type FunnelsScreenQuery = {
@@ -20,64 +21,50 @@ export type FunnelsScreenQuery = {
 
 
 /*
-query FunnelsScreenQuery {
-  account {
-    id
-    funnels(first: 2147483647) {
+query FunnelsScreenQuery(
+  $code: String!
+) {
+  account(code: $code) {
+    funnels {
       ...Funnels_funnels
     }
   }
 }
 
-fragment Funnels_funnels on FunnelObjectConnection {
-  edges {
-    node {
-      id
-      name
-      steps {
-        edges {
-          node {
-            id
-            name
-            leads {
-              edges {
-                node {
-                  id
-                }
-              }
-            }
-            payments {
-              edges {
-                node {
-                  id
-                  amountPaid
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+fragment Funnels_funnels on FunnelType {
+  id
+  name
+  steps {
+    id
+    name
   }
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "code",
+    "type": "String!"
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "code",
+    "variableName": "code"
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v1 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 2147483647
-  }
-],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -86,27 +73,26 @@ v2 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "FunnelsScreenQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "AccountObject",
+        "args": (v1/*: any*/),
+        "concreteType": "AccountType",
         "kind": "LinkedField",
         "name": "account",
         "plural": false,
         "selections": [
-          (v0/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
-            "concreteType": "FunnelObjectConnection",
+            "args": null,
+            "concreteType": "FunnelType",
             "kind": "LinkedField",
             "name": "funnels",
-            "plural": false,
+            "plural": true,
             "selections": [
               {
                 "args": null,
@@ -114,7 +100,7 @@ return {
                 "name": "Funnels_funnels"
               }
             ],
-            "storageKey": "funnels(first:2147483647)"
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -124,163 +110,43 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "FunnelsScreenQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "AccountObject",
+        "args": (v1/*: any*/),
+        "concreteType": "AccountType",
         "kind": "LinkedField",
         "name": "account",
         "plural": false,
         "selections": [
-          (v0/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
-            "concreteType": "FunnelObjectConnection",
+            "args": null,
+            "concreteType": "FunnelType",
             "kind": "LinkedField",
             "name": "funnels",
-            "plural": false,
+            "plural": true,
             "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "FunnelObjectEdge",
+                "concreteType": "FunnelStepType",
                 "kind": "LinkedField",
-                "name": "edges",
+                "name": "steps",
                 "plural": true,
                 "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "FunnelObject",
-                    "kind": "LinkedField",
-                    "name": "node",
-                    "plural": false,
-                    "selections": [
-                      (v0/*: any*/),
-                      (v2/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "FunnelStepObjectConnection",
-                        "kind": "LinkedField",
-                        "name": "steps",
-                        "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "FunnelStepObjectEdge",
-                            "kind": "LinkedField",
-                            "name": "edges",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "FunnelStepObject",
-                                "kind": "LinkedField",
-                                "name": "node",
-                                "plural": false,
-                                "selections": [
-                                  (v0/*: any*/),
-                                  (v2/*: any*/),
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "LeadObjectConnection",
-                                    "kind": "LinkedField",
-                                    "name": "leads",
-                                    "plural": false,
-                                    "selections": [
-                                      {
-                                        "alias": null,
-                                        "args": null,
-                                        "concreteType": "LeadObjectEdge",
-                                        "kind": "LinkedField",
-                                        "name": "edges",
-                                        "plural": true,
-                                        "selections": [
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "concreteType": "LeadObject",
-                                            "kind": "LinkedField",
-                                            "name": "node",
-                                            "plural": false,
-                                            "selections": [
-                                              (v0/*: any*/)
-                                            ],
-                                            "storageKey": null
-                                          }
-                                        ],
-                                        "storageKey": null
-                                      }
-                                    ],
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "PaymentObjectConnection",
-                                    "kind": "LinkedField",
-                                    "name": "payments",
-                                    "plural": false,
-                                    "selections": [
-                                      {
-                                        "alias": null,
-                                        "args": null,
-                                        "concreteType": "PaymentObjectEdge",
-                                        "kind": "LinkedField",
-                                        "name": "edges",
-                                        "plural": true,
-                                        "selections": [
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "concreteType": "PaymentObject",
-                                            "kind": "LinkedField",
-                                            "name": "node",
-                                            "plural": false,
-                                            "selections": [
-                                              (v0/*: any*/),
-                                              {
-                                                "alias": null,
-                                                "args": null,
-                                                "kind": "ScalarField",
-                                                "name": "amountPaid",
-                                                "storageKey": null
-                                              }
-                                            ],
-                                            "storageKey": null
-                                          }
-                                        ],
-                                        "storageKey": null
-                                      }
-                                    ],
-                                    "storageKey": null
-                                  }
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  }
+                  (v2/*: any*/),
+                  (v3/*: any*/)
                 ],
                 "storageKey": null
               }
             ],
-            "storageKey": "funnels(first:2147483647)"
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -292,9 +158,9 @@ return {
     "metadata": {},
     "name": "FunnelsScreenQuery",
     "operationKind": "query",
-    "text": "query FunnelsScreenQuery {\n  account {\n    id\n    funnels(first: 2147483647) {\n      ...Funnels_funnels\n    }\n  }\n}\n\nfragment Funnels_funnels on FunnelObjectConnection {\n  edges {\n    node {\n      id\n      name\n      steps {\n        edges {\n          node {\n            id\n            name\n            leads {\n              edges {\n                node {\n                  id\n                }\n              }\n            }\n            payments {\n              edges {\n                node {\n                  id\n                  amountPaid\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query FunnelsScreenQuery(\n  $code: String!\n) {\n  account(code: $code) {\n    funnels {\n      ...Funnels_funnels\n    }\n  }\n}\n\nfragment Funnels_funnels on FunnelType {\n  id\n  name\n  steps {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '04a23f855684dcb4ad0d7042400d9812';
+(node as any).hash = 'b139ea7a5c7cfd76c4263c193045dd73';
 export default node;
