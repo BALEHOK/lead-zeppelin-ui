@@ -1,4 +1,4 @@
-import { Nav, Select, Text } from 'grommet';
+import { Box, List, Select, Text } from 'grommet';
 import React, { useState } from 'react';
 import { IFunnel } from 'src/common/state/appContext';
 
@@ -12,18 +12,22 @@ export const Funnels = ({ funnels }: IProps) => {
   const options = funnels.map((f) => f.name);
 
   return (
-    <Nav direction="row">
-      <Text size="large" margin="small">
-        Funnel
-      </Text>
-      <Select
-        options={options}
-        value={selectedFunnel?.name}
-        onChange={({ option }) =>
-          setSelectedFunnel(funnels.find((f) => f.name === option))
-        }
+    <Box align="center" gap="large">
+      <Box align="center" justify="center" direction="row" gap="medium">
+        <Text>Funnel</Text>
+        <Select
+          options={options}
+          value={selectedFunnel?.name}
+          onChange={({ option }) =>
+            setSelectedFunnel(funnels.find((f) => f.name === option))
+          }
+        />
+      </Box>
+      <List
+        data={selectedFunnel?.steps.map((step) => ({ name: step.name }))}
+        pad="medium"
       />
-    </Nav>
+    </Box>
   );
 };
 

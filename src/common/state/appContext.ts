@@ -12,6 +12,7 @@ export interface IFunnel {
   name: string;
   steps: IFunnelStep[];
 }
+
 export interface IAppState {
   account: string;
   setAccount: TFunction1<string>;
