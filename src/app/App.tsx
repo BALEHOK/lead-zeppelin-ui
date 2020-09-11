@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
 import { Grommet } from 'grommet';
+import React, { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { storage } from '../common/lib/storage';
 import { AppContext } from '../common/state/appContext';
 import LoginPage from './LoginPage';
 import MainLayout from './MainLayout';
-import { storage } from '../common/lib/storage';
 import { theme } from './theme';
-import { BrowserRouter } from 'react-router-dom';
 
 export const App = () => {
   const [state, setState] = useState({
@@ -19,9 +19,13 @@ export const App = () => {
   return (
     <Grommet theme={theme} full>
       <AppContext.Provider value={{ account: state.account, setAccount }}>
-        <BrowserRouter>
-          {state.account ? <MainLayout /> : <LoginPage />}
-        </BrowserRouter>
+        {state.account ? (
+          <BrowserRouter>
+            <MainLayout />
+          </BrowserRouter>
+        ) : (
+          <LoginPage />
+        )}
       </AppContext.Provider>
     </Grommet>
   );
