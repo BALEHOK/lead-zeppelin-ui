@@ -1,39 +1,26 @@
-import graphql from 'babel-plugin-relay/macro';
-import React from 'react';
-import { QueryRenderer } from 'react-relay';
-import { storage } from 'src/common/lib/storage';
-import { environment } from '../common/relayEnvironment';
+import React, { useEffect } from 'react';
+import { TFunction } from 'src/common/lib/functionTypes';
+import { IFunnel } from 'src/common/state/appContext';
+import { withContext } from 'src/common/state/withContext';
 import FunnelView from './Funnels';
 
-const ClientsScreen = () => {
-  const account = storage.get('lz_account');
+interface IProps {
+  funnels: IFunnel[];
+  getFunnels: TFunction;
+}
 
-  return (
-    <QueryRenderer
-      environment={environment}
-      query={graphql`
-        query FunnelsScreenQuery($code: String!) {
-          account(code: $code) {
-            funnels {
-              ...Funnels_funnels
-            }
-          }
-        }
-      `}
-      variables={{ code: account }}
-      render={({ error, props }) => {
-        if (error) {
-          return <div>Error!</div>;
-        }
+const FunnelsScreen = ({ funnels, getFunnels }: IProps) => {
+  useEffect(() => {
+    if (!funnels?.length) {
+      getFunnels();
+    }
+  }, []);
 
-        if (!props) {
-          return <div>Loading...</div>;
-        }
+  if (!funnels?.length) {
+    return <div>Loading...</div>;
+  }
 
-        return <FunnelView funnels={(props as any).account.funnels} />;
-      }}
-    />
-  );
+  return <FunnelView funnels={funnels} />;
 };
 
-export default ClientsScreen;
+export default withContext(FunnelsScreen);

@@ -1,16 +1,21 @@
-import graphql from 'babel-plugin-relay/macro';
 import { Nav, Select, Text } from 'grommet';
 import React, { useState } from 'react';
-import { createFragmentContainer } from 'react-relay';
+import { IFunnel } from 'src/common/state/appContext';
 
-export const Funnels = ({ funnels }) => {
+interface IProps {
+  funnels: IFunnel[];
+}
+
+export const Funnels = ({ funnels }: IProps) => {
   const [selectedFunnel, setSelectedFunnel] = useState(funnels[0]);
 
   const options = funnels.map((f) => f.name);
 
   return (
     <Nav direction="row">
-      <Text>Funnel</Text>
+      <Text size="large" margin="small">
+        Funnel
+      </Text>
       <Select
         options={options}
         value={selectedFunnel?.name}
@@ -22,15 +27,4 @@ export const Funnels = ({ funnels }) => {
   );
 };
 
-export default createFragmentContainer(Funnels, {
-  funnels: graphql`
-    fragment Funnels_funnels on FunnelType {
-      id
-      name
-      steps {
-        id
-        name
-      }
-    }
-  `,
-});
+export default Funnels;
