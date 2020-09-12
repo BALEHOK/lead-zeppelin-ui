@@ -4,33 +4,9 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ClientsTable_clients = {
-    readonly edges: ReadonlyArray<{
-        readonly node: {
-            readonly id: string;
-            readonly name: string | null;
-            readonly email: string | null;
-            readonly leads: {
-                readonly edges: ReadonlyArray<{
-                    readonly node: {
-                        readonly id: string;
-                        readonly source: string | null;
-                        readonly campaign: string | null;
-                        readonly funnelStep: {
-                            readonly name: string | null;
-                        } | null;
-                    } | null;
-                } | null>;
-            } | null;
-            readonly payments: {
-                readonly edges: ReadonlyArray<{
-                    readonly node: {
-                        readonly id: string;
-                        readonly amountPaid: number | null;
-                    } | null;
-                } | null>;
-            } | null;
-        } | null;
-    } | null>;
+    readonly id: string | null;
+    readonly name: string | null;
+    readonly email: string | null;
     readonly " $refType": "ClientsTable_clients";
 };
 export type ClientsTable_clients$data = ClientsTable_clients;
@@ -41,22 +17,7 @@ export type ClientsTable_clients$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -65,138 +26,26 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": "ClientObjectEdge",
-      "kind": "LinkedField",
-      "name": "edges",
-      "plural": true,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "ClientObject",
-          "kind": "LinkedField",
-          "name": "node",
-          "plural": false,
-          "selections": [
-            (v0/*: any*/),
-            (v1/*: any*/),
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "email",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "LeadObjectConnection",
-              "kind": "LinkedField",
-              "name": "leads",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "LeadObjectEdge",
-                  "kind": "LinkedField",
-                  "name": "edges",
-                  "plural": true,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "LeadObject",
-                      "kind": "LinkedField",
-                      "name": "node",
-                      "plural": false,
-                      "selections": [
-                        (v0/*: any*/),
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "source",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "campaign",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "concreteType": "FunnelStepObject",
-                          "kind": "LinkedField",
-                          "name": "funnelStep",
-                          "plural": false,
-                          "selections": [
-                            (v1/*: any*/)
-                          ],
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "PaymentObjectConnection",
-              "kind": "LinkedField",
-              "name": "payments",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "PaymentObjectEdge",
-                  "kind": "LinkedField",
-                  "name": "edges",
-                  "plural": true,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "PaymentObject",
-                      "kind": "LinkedField",
-                      "name": "node",
-                      "plural": false,
-                      "selections": [
-                        (v0/*: any*/),
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "amountPaid",
-                          "storageKey": null
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "email",
       "storageKey": null
     }
   ],
-  "type": "ClientObjectConnection"
+  "type": "ClientType"
 };
-})();
-(node as any).hash = 'd05b36a247ee49fd2846973ecb493dd4';
+(node as any).hash = '56197486ed8952e197bfc727761912e8';
 export default node;

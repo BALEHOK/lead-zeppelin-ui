@@ -3,38 +3,41 @@
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ClientsScreenQueryVariables = {
+export type FunnelsScreenQueryVariables = {
     code: string;
 };
-export type ClientsScreenQueryResponse = {
+export type FunnelsScreenQueryResponse = {
     readonly account: {
-        readonly clients: ReadonlyArray<{
-            readonly " $fragmentRefs": FragmentRefs<"ClientsTable_clients">;
+        readonly funnels: ReadonlyArray<{
+            readonly " $fragmentRefs": FragmentRefs<"Funnels_funnels">;
         } | null> | null;
     } | null;
 };
-export type ClientsScreenQuery = {
-    readonly response: ClientsScreenQueryResponse;
-    readonly variables: ClientsScreenQueryVariables;
+export type FunnelsScreenQuery = {
+    readonly response: FunnelsScreenQueryResponse;
+    readonly variables: FunnelsScreenQueryVariables;
 };
 
 
 
 /*
-query ClientsScreenQuery(
+query FunnelsScreenQuery(
   $code: String!
 ) {
   account(code: $code) {
-    clients {
-      ...ClientsTable_clients
+    funnels {
+      ...Funnels_funnels
     }
   }
 }
 
-fragment ClientsTable_clients on ClientType {
+fragment Funnels_funnels on FunnelType {
   id
   name
-  email
+  steps {
+    id
+    name
+  }
 }
 */
 
@@ -53,13 +56,27 @@ v1 = [
     "name": "code",
     "variableName": "code"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ClientsScreenQuery",
+    "name": "FunnelsScreenQuery",
     "selections": [
       {
         "alias": null,
@@ -72,15 +89,15 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "ClientType",
+            "concreteType": "FunnelType",
             "kind": "LinkedField",
-            "name": "clients",
+            "name": "funnels",
             "plural": true,
             "selections": [
               {
                 "args": null,
                 "kind": "FragmentSpread",
-                "name": "ClientsTable_clients"
+                "name": "Funnels_funnels"
               }
             ],
             "storageKey": null
@@ -95,7 +112,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ClientsScreenQuery",
+    "name": "FunnelsScreenQuery",
     "selections": [
       {
         "alias": null,
@@ -108,30 +125,24 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "ClientType",
+            "concreteType": "FunnelType",
             "kind": "LinkedField",
-            "name": "clients",
+            "name": "funnels",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "email",
+                "concreteType": "FunnelStepType",
+                "kind": "LinkedField",
+                "name": "steps",
+                "plural": true,
+                "selections": [
+                  (v2/*: any*/),
+                  (v3/*: any*/)
+                ],
                 "storageKey": null
               }
             ],
@@ -145,11 +156,11 @@ return {
   "params": {
     "id": null,
     "metadata": {},
-    "name": "ClientsScreenQuery",
+    "name": "FunnelsScreenQuery",
     "operationKind": "query",
-    "text": "query ClientsScreenQuery(\n  $code: String!\n) {\n  account(code: $code) {\n    clients {\n      ...ClientsTable_clients\n    }\n  }\n}\n\nfragment ClientsTable_clients on ClientType {\n  id\n  name\n  email\n}\n"
+    "text": "query FunnelsScreenQuery(\n  $code: String!\n) {\n  account(code: $code) {\n    funnels {\n      ...Funnels_funnels\n    }\n  }\n}\n\nfragment Funnels_funnels on FunnelType {\n  id\n  name\n  steps {\n    id\n    name\n  }\n}\n"
   }
 };
 })();
-(node as any).hash = '418a4db32bbc1a0499f8942b1d98fe5a';
+(node as any).hash = 'b139ea7a5c7cfd76c4263c193045dd73';
 export default node;

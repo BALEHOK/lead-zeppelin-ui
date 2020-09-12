@@ -1,9 +1,9 @@
-import React from 'react';
-import { DataTable, Text } from 'grommet';
-import { createFragmentContainer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
-import { ClientsTable_clients } from './__generated__/ClientsTable_clients.graphql';
+import { DataTable, Text } from 'grommet';
+import React from 'react';
+import { createFragmentContainer } from 'react-relay';
 import { mapGqlProps } from '../common/lib/mapGqlProps';
+import { ClientsTable_clients } from './__generated__/ClientsTable_clients.graphql';
 
 export const ClientsTable = ({ clients }) => (
   <DataTable
@@ -40,22 +40,21 @@ export const ClientsTable = ({ clients }) => (
 );
 
 const clientsMapper = (props) => {
-  const clients = (props.clients as ClientsTable_clients).edges.map((e) => {
-    const rawClient = e?.node;
-    const rawLead = rawClient?.leads?.edges[0]?.node;
-    const amountPaid =
-      (rawClient?.payments?.edges || [])
-        .map((e) => e?.node?.amountPaid || 0)
-        .reduce((summ, cur) => summ + cur, 0) / 100;
+  const clients = (props.clients as ClientsTable_clients[]).map((rawClient) => {
+    // const rawLead = rawClient?.leads?.edges[0]?.node;
+    // const amountPaid =
+    //   (rawClient?.payments?.edges || [])
+    //     .map((e) => e?.node?.amountPaid || 0)
+    //     .reduce((summ, cur) => summ + cur, 0) / 100;
 
     const client = {
-      id: rawClient?.id,
-      name: rawClient?.name,
-      email: rawClient?.email,
-      source: rawLead?.source,
-      campaign: rawLead?.campaign,
-      funnelStep: rawLead?.funnelStep?.name,
-      amountPaid,
+      id: rawClient.id,
+      name: rawClient.name,
+      email: rawClient.email,
+      source: '',
+      campaign: '',
+      funnelStep: '',
+      amountPaid: 0,
     } as any;
 
     return client;
@@ -68,34 +67,30 @@ export default createFragmentContainer(
   mapGqlProps(ClientsTable, clientsMapper),
   {
     clients: graphql`
-      fragment ClientsTable_clients on ClientObjectConnection {
-        edges {
-          node {
-            id
-            name
-            email
-            leads {
-              edges {
-                node {
-                  id
-                  source
-                  campaign
-                  funnelStep {
-                    name
-                  }
-                }
-              }
-            }
-            payments {
-              edges {
-                node {
-                  id
-                  amountPaid
-                }
-              }
-            }
-          }
-        }
+      fragment ClientsTable_clients on ClientType {
+        id
+        name
+        email
+        # leads {
+        #   edges {
+        #     node {
+        #       id
+        #       source
+        #       campaign
+        #       funnelStep {
+        #         name
+        #       }
+        #     }
+        #   }
+        # }
+        # payments {
+        #   edges {
+        #     node {
+        #       id
+        #       amountPaid
+        #     }
+        #   }
+        # }
       }
     `,
   }

@@ -1,44 +1,37 @@
-import React from 'react';
 import graphql from 'babel-plugin-relay/macro';
+import React from 'react';
 import { QueryRenderer } from 'react-relay';
+import { storage } from 'src/common/lib/storage';
 import { environment } from '../common/relayEnvironment';
 import ClientsTable from './ClientsTable';
 
-const ClientsScreen = () => (
-  <QueryRenderer
-    environment={environment}
-    query={graphql`
-      query ClientsScreenQuery {
-        account {
-          id
-          clients(first: 2147483647) {
-            ...ClientsTable_clients
-          }
-        }
-        clients(first: 2147483647) {
-          edges {
-            node {
-              id
-              name
-              email
+const ClientsScreen_ = () => {
+  const account = storage.get('lz_account');
+  return (
+    <QueryRenderer
+      environment={environment}
+      query={graphql`
+        query ClientsScreenQuery($code: String!) {
+          account(code: $code) {
+            clients {
+              ...ClientsTable_clients
             }
           }
         }
-      }
-    `}
-    variables={{}}
-    render={({ error, props }) => {
-      if (error) {
-        return <div>Error!</div>;
-      }
+      `}
+      variables={{ code: account }}
+      render={({ error, props }) => {
+        if (error) {
+          return <div>Error!</div>;
+        }
 
-      if (!props) {
-        return <div>Loading...</div>;
-      }
+        if (!props) {
+          return <div>Loading...</div>;
+        }
 
-      return <ClientsTable clients={(props as any).account.clients} />;
-    }}
-  />
-);
-
-export default ClientsScreen;
+        return <ClientsTable clients={(props as any).account.clients} />;
+      }}
+    />
+  );
+};
+export default ClientsScreen_;

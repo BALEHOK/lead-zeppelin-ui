@@ -1,235 +1,54 @@
-# source: http://localhost:5000/graphql
-# timestamp: Tue May 05 2020 23:56:02 GMT-0400 (Eastern Daylight Time)
+# source: http://localhost:4000/graphql
+# timestamp: Fri Aug 28 2020 22:58:00 GMT-0400 (Eastern Daylight Time)
 
-type AccountObject implements Node {
-  """The ID of the object."""
-  id: ID!
-  created: DateTime!
-  updated: DateTime
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
+
+type AccountType {
+  id: String
   name: String
   code: String
-  clients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
-  funnels(before: String, after: String, first: Int, last: Int): FunnelObjectConnection
+  funnels: [FunnelType]
+  clients: [ClientType]
 }
 
-type ClientObject implements Node {
-  """The ID of the object."""
-  id: ID!
-  created: DateTime!
-  updated: DateTime
+type ClientType {
+  id: String
+  accountId: String
   name: String
   email: String
   phone: String
   vk: String
   fb: String
   gc: String
-  accountId: String
-  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
-  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
-  account: AccountObject
 }
 
-type ClientObjectConnection {
-  """Pagination data for this connection."""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection."""
-  edges: [ClientObjectEdge]!
-}
-
-"""A Relay edge containing a `ClientObject` and its cursor."""
-type ClientObjectEdge {
-  """The item at the end of the edge"""
-  node: ClientObject
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-"""
-The `DateTime` scalar type represents a DateTime
-value as specified by
-[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
-"""
-scalar DateTime
-
-type FunnelObject implements Node {
-  """The ID of the object."""
-  id: ID!
-  name: String
-  accountId: String
-  steps(before: String, after: String, first: Int, last: Int): FunnelStepObjectConnection
-  account: AccountObject
-}
-
-type FunnelObjectConnection {
-  """Pagination data for this connection."""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection."""
-  edges: [FunnelObjectEdge]!
-}
-
-"""A Relay edge containing a `FunnelObject` and its cursor."""
-type FunnelObjectEdge {
-  """The item at the end of the edge"""
-  node: FunnelObject
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type FunnelStepObject implements Node {
-  """The ID of the object."""
-  id: ID!
+type FunnelStepType {
+  id: String
   name: String
   code: String
-  funnelId: String
-  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
-  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
-  funnel: FunnelObject
 }
 
-type FunnelStepObjectConnection {
-  """Pagination data for this connection."""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection."""
-  edges: [FunnelStepObjectEdge]!
+type FunnelType {
+  id: String
+  accountId: String
+  name: String
+  steps: [FunnelStepType]
 }
 
-"""A Relay edge containing a `FunnelStepObject` and its cursor."""
-type FunnelStepObjectEdge {
-  """The item at the end of the edge"""
-  node: FunnelStepObject
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type LeadFunnelStepHistoryObject implements Node {
-  """The ID of the object."""
-  id: ID!
-  prevStepId: String
-  funnelStepId: String
-  leadId: String
-  changed: DateTime!
-}
-
-type LeadFunnelStepHistoryObjectConnection {
-  """Pagination data for this connection."""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection."""
-  edges: [LeadFunnelStepHistoryObjectEdge]!
-}
-
-"""
-A Relay edge containing a `LeadFunnelStepHistoryObject` and its cursor.
-"""
-type LeadFunnelStepHistoryObjectEdge {
-  """The item at the end of the edge"""
-  node: LeadFunnelStepHistoryObject
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-type LeadObject implements Node {
-  """The ID of the object."""
-  id: ID!
-  created: DateTime!
-  updated: DateTime
-  clientId: String
-  source: String
-  medium: String
-  campaign: String
-  content: String
-  funnelStepId: String
-  funnelStep: FunnelStepObject
-  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
-  client: ClientObject
-}
-
-type LeadObjectConnection {
-  """Pagination data for this connection."""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection."""
-  edges: [LeadObjectEdge]!
-}
-
-"""A Relay edge containing a `LeadObject` and its cursor."""
-type LeadObjectEdge {
-  """The item at the end of the edge"""
-  node: LeadObject
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-"""An object with an ID"""
-interface Node {
-  """The ID of the object."""
-  id: ID!
-}
-
-"""
-The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
-"""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: String
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: String
-}
-
-type PaymentObject implements Node {
-  """The ID of the object."""
-  id: ID!
-  created: DateTime!
-  updated: DateTime
-  amountPaid: Int
-  clientId: String
-  leadId: String
-  funnelStepId: String
-  client: ClientObject
-  lead: LeadObject
-  funnelStep: FunnelStepObject
-}
-
-type PaymentObjectConnection {
-  """Pagination data for this connection."""
-  pageInfo: PageInfo!
-
-  """Contains the nodes in this connection."""
-  edges: [PaymentObjectEdge]!
-}
-
-"""A Relay edge containing a `PaymentObject` and its cursor."""
-type PaymentObjectEdge {
-  """The item at the end of the edge"""
-  node: PaymentObject
-
-  """A cursor for use in pagination"""
-  cursor: String!
+type Mutation {
+  createAccount(code: String, name: String): AccountType
+  deleteAccount(id: ID): ID
+  updateAccount(id: ID, content: String): AccountType
+  createFunnel(accountId: String!, name: String!): FunnelType
+  createFunnelStep(funnelId: String!, code: String!, name: String!): FunnelType
 }
 
 type Query {
-  """The ID of the object"""
-  node(id: ID!): Node
-  account: AccountObject
-  clients(before: String, after: String, first: Int, last: Int): ClientObjectConnection
-  leads(before: String, after: String, first: Int, last: Int): LeadObjectConnection
-  funnels(before: String, after: String, first: Int, last: Int): FunnelObjectConnection
-  funnelSteps(before: String, after: String, first: Int, last: Int): FunnelStepObjectConnection
-  leadFunnelStepHistories(before: String, after: String, first: Int, last: Int): LeadFunnelStepHistoryObjectConnection
-  payments(before: String, after: String, first: Int, last: Int): PaymentObjectConnection
+  account(code: String!): AccountType
+  accounts: [AccountType]
+  funnel(id: String!): FunnelType
 }

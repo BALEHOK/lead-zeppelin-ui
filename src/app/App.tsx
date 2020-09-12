@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
 import { Grommet } from 'grommet';
+import React, { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import funnelService from 'src/funnels/funnelService';
+import paymentService from 'src/payments/paymentService';
+import { storage } from '../common/lib/storage';
 import { AppContext } from '../common/state/appContext';
 import LoginPage from './LoginPage';
 import MainLayout from './MainLayout';
-import { storage } from '../common/lib/storage';
 import { theme } from './theme';
-import { BrowserRouter } from 'react-router-dom';
 
 export const App = () => {
-  const [state, setState] = useState({
-    account: storage.get('lz_account'),
-  });
+  const [account, setAccountState] = useState(storage.get('lz_account'));
   const setAccount = (account: string) => {
-    setState({ account });
+    setAccountState(account);
     storage.set('lz_account', account);
+  };
+
+  const [funnels, setFunnelsState] = useState([]);
+  const getFunnels = async () => {
+    const nextFunnels = await funnelService.getFunnels(account);
+    setFunnelsState(nextFunnels);
+  };
+
+  const [payments, setPaymentsState] = useState([]);
+  const getPayments = async () => {
+    const nextPayments = await paymentService.getPayments(account);
+    setPaymentsState(nextPayments);
   };
 
   return (
     <Grommet theme={theme} full>
-      <AppContext.Provider value={{ account: state.account, setAccount }}>
-        <BrowserRouter>
-          {state.account ? <MainLayout /> : <LoginPage />}
-        </BrowserRouter>
+      <AppContext.Provider
+        value={{
+          account: account,
+          setAccount,
+          funnels,
+          getFunnels,
+          payments,
+          getPayments,
+        }}
+      >
+        {account ? (
+          <BrowserRouter>
+            <MainLayout />
+          </BrowserRouter>
+        ) : (
+          <LoginPage />
+        )}
       </AppContext.Provider>
     </Grommet>
   );

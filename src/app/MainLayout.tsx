@@ -1,11 +1,13 @@
+import { Avatar, Box, Button, Nav, Sidebar, Text } from 'grommet';
+import { Diamond, Filter, Group, Help, Projects } from 'grommet-icons';
 import React from 'react';
-import { Box, Sidebar, Avatar, Button, Nav, Text } from 'grommet';
-import { Help, Projects, Group } from 'grommet-icons';
+import { Route, Switch } from 'react-router-dom';
+import ClientsScreen from 'src/clients/ClientsScreen';
+import { Dashboard } from 'src/dashboard/DashboardScreen';
+import FunnelScreen from 'src/funnels/FunnelsScreen';
+import PaymentsScreen from 'src/payments/PaymentsScreen';
 import styles from './MainLayout.module.scss';
 import { routes } from './routes';
-import { Switch, Route } from 'react-router-dom';
-import { Dashboard } from '../dashboard/DashboardScreen';
-import ClientsScreen from '../clients/ClientsScreen';
 import SidebarItem from './SidebarItem';
 
 export const MainLayout = () => (
@@ -34,7 +36,9 @@ export const MainLayout = () => (
           icon={<Projects />}
           label="Dashboard"
         />
+        <SidebarItem to={routes.funnels} icon={<Filter />} label="Funnels" />
         <SidebarItem to={routes.clients} icon={<Group />} label="Clients" />
+        <SidebarItem to={routes.payments} icon={<Diamond />} label="Payments" />
       </Nav>
     </Sidebar>
     <Box pad="medium" overflow="auto" className={styles.content}>
@@ -42,8 +46,14 @@ export const MainLayout = () => (
         <Route path={routes.dashboard} exact>
           <Dashboard />
         </Route>
+        <Route path={routes.funnels}>
+          <FunnelScreen />
+        </Route>
         <Route path={routes.clients}>
           <ClientsScreen />
+        </Route>
+        <Route path={routes.payments}>
+          <PaymentsScreen />
         </Route>
       </Switch>
     </Box>
