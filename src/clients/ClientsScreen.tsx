@@ -5,7 +5,7 @@ import { storage } from 'src/common/lib/storage';
 import { environment } from '../common/relayEnvironment';
 import ClientsTable from './ClientsTable';
 
-const ClientsScreen = () => {
+const ClientsScreen_ = () => {
   const account = storage.get('lz_account');
   return (
     <QueryRenderer
@@ -34,5 +34,4 @@ const ClientsScreen = () => {
     />
   );
 };
-
-export default ClientsScreen;
+export default ClientsScreen_;

@@ -1,10 +1,11 @@
 import { Avatar, Box, Button, Nav, Sidebar, Text } from 'grommet';
-import { Filter, Group, Help, Projects } from 'grommet-icons';
+import { Diamond, Filter, Group, Help, Projects } from 'grommet-icons';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import ClientsScreen from 'src/clients/ClientsScreen';
 import { Dashboard } from 'src/dashboard/DashboardScreen';
 import FunnelScreen from 'src/funnels/FunnelsScreen';
+import PaymentsScreen from 'src/payments/PaymentsScreen';
 import styles from './MainLayout.module.scss';
 import { routes } from './routes';
 import SidebarItem from './SidebarItem';
@@ -37,6 +38,7 @@ export const MainLayout = () => (
         />
         <SidebarItem to={routes.funnels} icon={<Filter />} label="Funnels" />
         <SidebarItem to={routes.clients} icon={<Group />} label="Clients" />
+        <SidebarItem to={routes.payments} icon={<Diamond />} label="Payments" />
       </Nav>
     </Sidebar>
     <Box pad="medium" overflow="auto" className={styles.content}>
@@ -49,6 +51,9 @@ export const MainLayout = () => (
         </Route>
         <Route path={routes.clients}>
           <ClientsScreen />
+        </Route>
+        <Route path={routes.payments}>
+          <PaymentsScreen />
         </Route>
       </Switch>
     </Box>
