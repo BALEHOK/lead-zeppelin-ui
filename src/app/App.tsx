@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-
 import { Box, Grommet } from 'grommet';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import accountService from 'src/account/accountService';
 import clientService from 'src/clients/clientService';
 import { storage } from 'src/common/lib/storage';
 import { AppContext, IAccount } from 'src/common/state/appContext';
 import funnelService from 'src/funnels/funnelService';
-import accountService from 'src/account/accountService';
 import paymentService from 'src/payments/paymentService';
 import Loader from 'src/uiKit/loader/Loader';
 import LoginPage from './LoginPage';

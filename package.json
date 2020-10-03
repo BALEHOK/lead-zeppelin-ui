@@ -41,6 +41,7 @@
     "eslint": "^7.8.1",
     "eslint-config-react-app": "^5.2.1",
     "eslint-plugin-react-hooks": "^4.1.1",
+    "eslint-plugin-simple-import-sort": "^5.0.3",
     "relay-compiler": "^9.1.0"
   },
   "scripts": {
@@ -70,11 +71,12 @@
   "eslintConfig": {
     "extends": "react-app",
     "plugins": [
-      "react-hooks"
+      "react-hooks",
+      "simple-import-sort"
     ],
     "rules": {
       "react-hooks/exhaustive-deps": 0,
-      "sort-imports": "error"
+      "simple-import-sort/sort": "off"
     }
   }
 }
