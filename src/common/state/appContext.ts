@@ -1,6 +1,13 @@
 import React from 'react';
 import { TFunction, TFunction1 } from '../lib/functionTypes';
 
+export interface IAccount {
+  name: string;
+  code: string;
+  // funnels: IFunnel[]
+  // clients: IClient[]
+  // payments: IPayment[]
+}
 export interface IFunnelStep {
   id: string;
   name: string;
@@ -22,6 +29,7 @@ export interface ILead {
   campaign: string;
   content: string;
   funnelStep: IFunnelStep;
+  payments: IPayment[];
 }
 
 export interface IPayment {
@@ -31,9 +39,16 @@ export interface IPayment {
   lead: ILead;
 }
 
+export interface IClient {
+  id: string;
+  leads: ILead[];
+}
+
 export interface IAppState {
-  account: string;
-  setAccount: TFunction1<string>;
+  account: IAccount;
+  setAccount: TFunction1<IAccount>;
+  clients: IClient[];
+  getClients: TFunction;
   funnels: IFunnel[];
   getFunnels: TFunction;
   payments: IPayment[];

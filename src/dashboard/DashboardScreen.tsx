@@ -35,7 +35,7 @@ export const Dashboard = () => (
     />
     <PieChart
       data={purchaseCount.map((count, index) => ({
-        id: index,
+        id: index.toString(),
         label: `${index} payments`,
         value: count,
       }))}

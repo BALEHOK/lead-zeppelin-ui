@@ -25,11 +25,12 @@ export class PaymentService {
       variables: { code: account },
     });
 
-    return (result.data?.data?.account?.payments?.map(this.fromGqlObject) ||
-      []) as IPayment[];
+    return (result.data?.data?.account?.payments?.map(
+      PaymentService.fromGqlObject
+    ) || []) as IPayment[];
   }
 
-  fromGqlObject(rawPayment: any) {
+  static fromGqlObject(rawPayment: any) {
     rawPayment.created = new Date(+rawPayment.created);
     rawPayment?.lead?.created &&
       (rawPayment.lead.created = new Date(+rawPayment.lead.created));
