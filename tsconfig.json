@@ -17,5 +17,5 @@
     "target": "es5",
     "baseUrl": "."
   },
-  "include": ["src"]
+  "include": ["src", "react-app-env.d.ts"]
 }

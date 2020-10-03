@@ -17,16 +17,19 @@ export const LoginPage = ({ setAccount }: IAppState) => {
   }) => {
     setLoading(true);
     setError(null);
-    const account = await accountService.getAccount(accountCode);
-    setLoading(false);
-    if (account) {
-      storage.set('lz_account', account.code);
-      setAccount(account);
-      setError(null);
-      return;
+    let account;
+    try {
+      account = await accountService.getAccount(accountCode);
+    } finally {
+      setLoading(false);
+      if (account) {
+        storage.set('lz_account', account.code);
+        setAccount(account);
+        setError(null);
+        return;
+      }
+      setError('Account not found');
     }
-
-    setError('Account not found');
   };
 
   return (

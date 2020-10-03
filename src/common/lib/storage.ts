@@ -4,7 +4,7 @@ export class Storage {
   }
   get(key: string): any {
     const stringified = localStorage.getItem(key);
-    if (stringified === null) {
+    if (!stringified) {
       return null;
     }
 
