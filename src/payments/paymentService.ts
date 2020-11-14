@@ -1,5 +1,5 @@
 import { Gql } from 'src/common/gql/graphql-zeus';
-import { decodeChannel } from 'src/common/lib/channelHash';
+import { decodeChannel, emptyEncodedChannel } from 'src/common/lib/channelHash';
 
 export class PaymentService {
   async getPayments(account: string) {
@@ -19,26 +19,45 @@ export class PaymentService {
       ],
     });
 
-    const channelPayments = {};
+    const channelData = {};
     result.account.leads.forEach((lead) => {
-      const { source, medium, campaign, content, referer } = decodeChannel(
-        lead.channel
-      );
-      const channelOrigin = [source, medium, campaign, content, referer]
-        .filter(Boolean)
-        .join(' / ');
-      channelPayments[lead.channel] = channelPayments[lead.channel] || {
-        channel: channelOrigin,
-        count: 0,
-        amount: 0,
-      };
+      let leadChannelData = channelData[lead.channel];
+
+      let channelOrigin;
+      if (!leadChannelData) {
+        if (lead.channel !== emptyEncodedChannel) {
+          const { source, medium, campaign, content, referer } = decodeChannel(
+            lead.channel
+          );
+          channelOrigin = [source, medium, campaign, content, referer]
+            .filter(Boolean)
+            .join(' / ');
+        } else {
+          channelOrigin = '[empty]';
+        }
+
+        leadChannelData = {
+          channel: channelOrigin,
+          count: 0,
+          buyers: 0,
+          payments: 0,
+          revenue: 0,
+        };
+        channelData[lead.channel] = leadChannelData;
+      }
+
+      leadChannelData.count++;
+      if (lead.payments?.length) {
+        leadChannelData.buyers++;
+      }
+
       lead.payments.forEach((payment) => {
-        channelPayments[lead.channel].count++;
-        channelPayments[lead.channel].amount += payment.amount;
+        leadChannelData.payments++;
+        leadChannelData.revenue += payment.amount;
       });
     });
 
-    return Object.values(channelPayments);
+    return Object.values(channelData);
   }
 }
 

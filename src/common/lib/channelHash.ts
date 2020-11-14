@@ -1,5 +1,5 @@
 const separator = '_$_';
-const emptyEncodedChannel = encodeChannel({} as any);
+export const emptyEncodedChannel = encodeChannel({} as any);
 export function encodeChannel({
   medium,
   source,
