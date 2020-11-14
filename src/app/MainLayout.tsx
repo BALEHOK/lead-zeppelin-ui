@@ -39,7 +39,11 @@ export const MainLayout = ({ account }: IAppState) => (
           label="Dashboard"
         />
         <SidebarItem to={routes.funnels} icon={<Filter />} label="Funnels" />
-        <SidebarItem to={routes.payments} icon={<Diamond />} label="Payments" />
+        <SidebarItem
+          to={routes.payments}
+          icon={<Diamond />}
+          label="Analytics"
+        />
         <SidebarItem
           to={routes.unitEconomics}
           icon={<Optimize />}

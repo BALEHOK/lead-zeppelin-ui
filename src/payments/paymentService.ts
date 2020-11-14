@@ -1,41 +1,44 @@
-import { api } from 'src/common/lib/api';
-import { IPayment } from 'src/common/state/appContext';
+import { Gql } from 'src/common/gql/graphql-zeus';
+import { decodeChannel } from 'src/common/lib/channelHash';
 
 export class PaymentService {
   async getPayments(account: string) {
-    const result = await api.post('', {
-      query: `query Accounts($code: String!) {
-                account(code: $code) {
-                  payments {
-                    id
-                    amount
-                    created
-                    lead {
-                      source
-                      medium
-                      campaign
-                      content
-                      funnelStep {
-                        name
-                      }
-                    }
-                  }
-                }
-              }`,
-      variables: { code: account },
+    const result = await Gql.query({
+      account: [
+        {
+          code: account,
+        },
+        {
+          leads: {
+            channel: true,
+            payments: {
+              amount: true,
+            },
+          },
+        },
+      ],
     });
 
-    return (result.data?.data?.account?.payments?.map(
-      PaymentService.fromGqlObject
-    ) || []) as IPayment[];
-  }
+    const channelPayments = {};
+    result.account.leads.forEach((lead) => {
+      const { source, medium, campaign, content, referer } = decodeChannel(
+        lead.channel
+      );
+      const channelOrigin = [source, medium, campaign, content, referer]
+        .filter(Boolean)
+        .join(' / ');
+      channelPayments[lead.channel] = channelPayments[lead.channel] || {
+        channel: channelOrigin,
+        count: 0,
+        amount: 0,
+      };
+      lead.payments.forEach((payment) => {
+        channelPayments[lead.channel].count++;
+        channelPayments[lead.channel].amount += payment.amount;
+      });
+    });
 
-  static fromGqlObject(rawPayment: any) {
-    rawPayment.created = new Date(+rawPayment.created);
-    rawPayment?.lead?.created &&
-      (rawPayment.lead.created = new Date(+rawPayment.lead.created));
-
-    return rawPayment as IPayment;
+    return Object.values(channelPayments);
   }
 }
 
