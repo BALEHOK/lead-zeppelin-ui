@@ -1,5 +1,6 @@
 import { DataTable, Text } from 'grommet';
 import React from 'react';
+import { createUseStyles } from 'react-jss';
 
 interface IProps {
   payments: any[];
@@ -7,6 +8,7 @@ interface IProps {
 
 export const PaymentsList = ({ payments }: IProps) => (
   <DataTable
+    className={useStyles().table}
     columns={[
       {
         property: 'channel',
@@ -33,3 +35,14 @@ export const PaymentsList = ({ payments }: IProps) => (
     pad={{ horizontal: 'large' }}
   />
 );
+
+const useStyles = createUseStyles({
+  table: {
+    '& span': {
+      display: 'block',
+      overflow: 'hidden',
+      'text-overflow': 'ellipsis',
+      'white-space': 'nowrap',
+    },
+  },
+});

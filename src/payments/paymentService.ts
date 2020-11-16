@@ -26,7 +26,7 @@ export class PaymentService {
       let channelOrigin;
       if (!leadChannelData) {
         if (lead.channel !== emptyEncodedChannel) {
-          const { source, medium, campaign, content, referer } = decodeChannel(
+          let { source, medium, campaign, content, referer } = decodeChannel(
             lead.channel
           );
           channelOrigin = [source, medium, campaign, content, referer]
