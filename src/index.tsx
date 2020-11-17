@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './app/App';
+import { initLocalization } from './i18next/init';
+import './index.css';
+
+initLocalization();
 
 ReactDOM.render(
   <React.StrictMode>

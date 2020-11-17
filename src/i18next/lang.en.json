@@ -1,0 +1,10 @@
+{
+  "translation": {
+    "mainMenu": {
+      "dashboard": "Dashboard",
+      "funnels": "Funnels",
+      "analytics": "Analytics",
+      "unit": "Unit analysis"
+    }
+  }
+}

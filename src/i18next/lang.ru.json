@@ -1,0 +1,10 @@
+{
+  "translation": {
+    "mainMenu": {
+      "dashboard": "Сводка",
+      "funnels": "Воронки",
+      "analytics": "Аналитика",
+      "unit": "Юнит анализ"
+    }
+  }
+}

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './SidebarItem.module.scss';
 
 interface IProps {
   icon: React.ReactNode;
   to: string;
-  label: string;
+  label: ReactNode;
 }
 export const SidebarItem = ({ icon, to, label }: IProps) => (
   <NavLink
