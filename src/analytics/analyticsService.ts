@@ -1,7 +1,7 @@
 import { Gql } from 'src/common/gql/graphql-zeus';
 import { decodeChannel, emptyEncodedChannel } from 'src/common/lib/channelHash';
 
-export class PaymentService {
+export class AnalyticsService {
   async getPayments(account: string) {
     const result = await Gql.query({
       account: [
@@ -11,6 +11,7 @@ export class PaymentService {
         {
           leads: {
             channel: true,
+            referer: true,
             payments: {
               amount: true,
             },
@@ -26,12 +27,14 @@ export class PaymentService {
       let channelOrigin;
       if (!leadChannelData) {
         if (lead.channel !== emptyEncodedChannel) {
-          let { source, medium, campaign, content, referer } = decodeChannel(
+          let { source, medium, campaign, content } = decodeChannel(
             lead.channel
           );
-          channelOrigin = [source, medium, campaign, content, referer]
+          channelOrigin = [source, medium, campaign, content]
             .filter(Boolean)
             .join(' / ');
+        } else if (lead.referer) {
+          channelOrigin = lead.referer;
         } else {
           channelOrigin = '[empty]';
         }
@@ -61,4 +64,4 @@ export class PaymentService {
   }
 }
 
-export default new PaymentService();
+export default new AnalyticsService();

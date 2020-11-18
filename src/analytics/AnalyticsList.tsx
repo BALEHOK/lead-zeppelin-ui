@@ -6,7 +6,7 @@ interface IProps {
   payments: any[];
 }
 
-export const PaymentsList = ({ payments }: IProps) => (
+export const AnalyticsList = ({ payments }: IProps) => (
   <DataTable
     className={useStyles().table}
     columns={[

@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { TFunction } from 'src/common/lib/functionTypes';
 import { IPayment } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
-import { PaymentsList } from './PaymentsList';
+import { AnalyticsList } from './AnalyticsList';
 
 interface IProps {
   payments: IPayment[];
   getPayments: TFunction;
 }
 
-const PaymentsScreen = ({ payments, getPayments }: IProps) => {
+const AnalyticsScreen = ({ payments, getPayments }: IProps) => {
   useEffect(() => {
     if (!payments?.length) {
       getPayments();
@@ -20,7 +20,7 @@ const PaymentsScreen = ({ payments, getPayments }: IProps) => {
     return <div>Loading...</div>;
   }
 
-  return <PaymentsList payments={payments} />;
+  return <AnalyticsList payments={payments} />;
 };
 
-export default withContext(PaymentsScreen);
+export default withContext(AnalyticsScreen);
