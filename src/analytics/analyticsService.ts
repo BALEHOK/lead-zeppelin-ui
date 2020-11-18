@@ -33,8 +33,6 @@ export class AnalyticsService {
           channelOrigin = [source, medium, campaign, content]
             .filter(Boolean)
             .join(' / ');
-        } else if (lead.referer) {
-          channelOrigin = lead.referer;
         } else {
           channelOrigin = '[empty]';
         }
