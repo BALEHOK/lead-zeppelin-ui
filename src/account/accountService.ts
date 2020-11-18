@@ -1,19 +1,18 @@
-import { api } from 'src/common/lib/api';
-import { IAccount } from 'src/common/state/appContext';
+import { gqlApi } from 'src/common/api/clients';
 
 export class AccountService {
   async getAccount(account: string) {
-    const result = await api.post('', {
-      query: `query Accounts($code: String!) {
-                account(code: $code) {
-                  name
-                  code
-                }
-              }`,
-      variables: { code: account },
+    const result = await gqlApi.query({
+      account: [
+        { code: account },
+        {
+          name: true,
+          code: true,
+        },
+      ],
     });
 
-    return result.data?.data?.account as IAccount;
+    return result.account;
   }
 }
 

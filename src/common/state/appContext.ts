@@ -1,13 +1,7 @@
 import React from 'react';
+import { AccountType } from '../api/graphql-zeus';
 import { TFunction, TFunction1 } from '../lib/functionTypes';
 
-export interface IAccount {
-  name: string;
-  code: string;
-  // funnels: IFunnel[]
-  // clients: IClient[]
-  // payments: IPayment[]
-}
 export interface IFunnelStep {
   id: string;
   name: string;
@@ -45,8 +39,8 @@ export interface IClient {
 }
 
 export interface IAppState {
-  account: IAccount;
-  setAccount: TFunction1<IAccount>;
+  account: AccountType;
+  setAccount: TFunction1<AccountType>;
   clients: IClient[];
   getClients: TFunction;
   funnels: IFunnel[];

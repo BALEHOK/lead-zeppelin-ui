@@ -1,9 +1,9 @@
-import { Gql } from 'src/common/gql/graphql-zeus';
+import { gqlApi } from 'src/common/api/clients';
 import { decodeChannel, emptyEncodedChannel } from 'src/common/lib/channelHash';
 
 export class AnalyticsService {
   async getPayments(account: string) {
-    const result = await Gql.query({
+    const result = await gqlApi.query({
       account: [
         {
           code: account,

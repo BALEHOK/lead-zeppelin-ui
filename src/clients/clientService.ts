@@ -1,9 +1,9 @@
-import { api } from 'src/common/lib/api';
+import { restApi } from 'src/common/api/clients';
 import { IClient } from 'src/common/state/appContext';
 
 export class ClientService {
   async getClients(account: string) {
-    const result = await api.post('', {
+    const result = await restApi.post('', {
       query: `query Accounts($code: String!) {
                 account(code: $code) {
                   clients {

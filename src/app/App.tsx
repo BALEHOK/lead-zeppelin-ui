@@ -4,8 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import accountService from 'src/account/accountService';
 import paymentService from 'src/analytics/analyticsService';
 import clientService from 'src/clients/clientService';
+import { AccountType } from 'src/common/api/graphql-zeus';
 import { storage } from 'src/common/lib/storage';
-import { AppContext, IAccount } from 'src/common/state/appContext';
+import { AppContext } from 'src/common/state/appContext';
 import funnelService from 'src/funnels/funnelService';
 import Loader from 'src/uiKit/loader/Loader';
 import LoginPage from './LoginPage';
@@ -13,7 +14,7 @@ import MainLayout from './MainLayout';
 import { theme } from './theme';
 
 export const App = () => {
-  const [account, setAccountState] = useState(null as IAccount);
+  const [account, setAccountState] = useState(null as AccountType);
   const [loadingAccount, setLoadingAccount] = useState(false);
 
   useEffect(() => {
