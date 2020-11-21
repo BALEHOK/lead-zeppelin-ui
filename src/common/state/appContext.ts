@@ -40,6 +40,7 @@ export interface IAppState {
   getFunnels: TFunction;
   analyticsData: ChannelAnalyticsData[];
   loadAnalytics: TFunction;
+  updateChannelAc: (channel: string, ac: number) => void;
 }
 
 export const AppContext = React.createContext({} as IAppState);

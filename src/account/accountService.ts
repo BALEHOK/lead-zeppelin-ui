@@ -6,6 +6,7 @@ export class AccountService {
       account: [
         { code: account },
         {
+          id: true,
           name: true,
           code: true,
         },

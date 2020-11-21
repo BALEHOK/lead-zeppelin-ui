@@ -48,6 +48,17 @@ export const App = () => {
     setClientsState(nextClients);
   };
 
+  const updateChannelAc = async (channel: string, ac: number) => {
+    const success = await analyticsService.updateChannelAc(
+      account.id,
+      channel,
+      ac
+    );
+    if (success) {
+      loadAnalytics();
+    }
+  };
+
   return (
     <Grommet theme={theme} full>
       <AppContext.Provider
@@ -60,6 +71,7 @@ export const App = () => {
           getFunnels,
           analyticsData,
           loadAnalytics,
+          updateChannelAc,
         }}
       >
         {loadingAccount && (

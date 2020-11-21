@@ -50,11 +50,17 @@ const UnitScreen = ({ analyticsData, loadAnalytics }: IProps) => {
   }
 
   const revenue = 0.01 * aggregatedAnalytics.revenue;
-  const avp = revenue / aggregatedAnalytics.payments;
-  const cpa = ac / aggregatedAnalytics.ua;
-  const apc = aggregatedAnalytics.payments / aggregatedAnalytics.buyers;
+  let avp = aggregatedAnalytics.payments
+    ? revenue / aggregatedAnalytics.payments
+    : 0;
+  const cpa = aggregatedAnalytics.ua ? ac / aggregatedAnalytics.ua : 0;
+  const apc = aggregatedAnalytics.buyers
+    ? aggregatedAnalytics.payments / aggregatedAnalytics.buyers
+    : 0;
   const arpc = (avp - cogs) * apc;
-  const c1 = aggregatedAnalytics.buyers / aggregatedAnalytics.ua;
+  const c1 = aggregatedAnalytics.ua
+    ? aggregatedAnalytics.buyers / aggregatedAnalytics.ua
+    : 0;
   const arpu = arpc * c1;
   const cm = aggregatedAnalytics.ua * (arpu - cpa);
 

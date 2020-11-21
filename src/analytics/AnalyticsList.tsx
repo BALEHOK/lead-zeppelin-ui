@@ -2,18 +2,21 @@ import { DataTable, Text } from 'grommet';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { fromCentsToDollars } from 'src/common/fromCentsToDollars';
+import { TFunction2 } from 'src/common/lib/functionTypes';
+import { AcquisitionCostCell } from './AcquisitionCostCell';
 import { ChannelAnalyticsData } from './channelAnalyticsData';
 
 interface IProps {
   analyticsData: ChannelAnalyticsData[];
+  updateChannelAc: TFunction2<string, number>;
 }
 
-export const AnalyticsList = ({ analyticsData }: IProps) => (
+export const AnalyticsList = ({ analyticsData, updateChannelAc }: IProps) => (
   <DataTable<ChannelAnalyticsData>
     className={useStyles().table}
     columns={[
       {
-        property: 'channel',
+        property: 'channelLabel',
         header: <Text>Channel</Text>,
         primary: true,
         size: 'large',
@@ -33,7 +36,13 @@ export const AnalyticsList = ({ analyticsData }: IProps) => (
       },
       {
         property: 'ac',
-        render: (channelPayment) => fromCentsToDollars(channelPayment.ac),
+        render: (channelPayment) => (
+          <AcquisitionCostCell
+            ac={channelPayment.ac}
+            channel={channelPayment.channel}
+            updateChannelAc={updateChannelAc}
+          />
+        ),
         header: <Text>Acquisition cost</Text>,
       },
     ]}

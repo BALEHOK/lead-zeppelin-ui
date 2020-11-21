@@ -12,4 +12,5 @@ export interface AnalyticsData {
 
 export interface ChannelAnalyticsData extends AnalyticsData {
   channel: string;
+  channelLabel: string;
 }

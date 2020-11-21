@@ -34,21 +34,22 @@ export class AnalyticsService {
     result.account.leads.forEach((lead) => {
       let leadChannelData = channelData[lead.channel];
 
-      let channelOrigin;
+      let channelLabel;
       if (!leadChannelData) {
         if (lead.channel !== emptyEncodedChannel) {
           let { source, medium, campaign, content } = decodeChannel(
             lead.channel
           );
-          channelOrigin = [source, medium, campaign, content]
+          channelLabel = [source, medium, campaign, content]
             .filter(Boolean)
             .join(' / ');
         } else {
-          channelOrigin = '[empty]';
+          channelLabel = '[empty]';
         }
 
         leadChannelData = {
-          channel: channelOrigin,
+          channel: lead.channel,
+          channelLabel,
           ua: 0,
           buyers: 0,
           payments: 0,
@@ -70,6 +71,25 @@ export class AnalyticsService {
     });
 
     return Object.values(channelData);
+  }
+
+  async updateChannelAc(accountId: string, channel: string, ac: number) {
+    const result = await gqlApi.mutation({
+      updateChannel: [
+        {
+          accountId,
+          channelInfo: {
+            channel,
+            spendings: ac,
+          },
+        },
+        {
+          spendings: true,
+        },
+      ],
+    });
+
+    return result.updateChannel.spendings === ac;
   }
 }
 
