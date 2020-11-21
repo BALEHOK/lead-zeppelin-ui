@@ -1,50 +1,56 @@
 import { Box, FormField, Text, TextInput } from 'grommet';
 import React, { useEffect, useState } from 'react';
+import {
+  AnalyticsData,
+  ChannelAnalyticsData,
+} from 'src/analytics/channelAnalyticsData';
 import { TFunction } from 'src/common/lib/functionTypes';
-import { IClient, IPayment } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
 import Loader from 'src/uiKit/loader/Loader';
 
 interface IProps {
-  clients: IClient[];
-  getClients: TFunction;
-  payments: IPayment[];
-  getPayments: TFunction;
+  analyticsData: ChannelAnalyticsData[];
+  loadAnalytics: TFunction;
 }
 
-const UnitScreen = ({ clients, getClients, payments, getPayments }: IProps) => {
+const UnitScreen = ({ analyticsData, loadAnalytics }: IProps) => {
   const [cogs, setCogs] = useState(0);
   const [ac, setAc] = useState(0);
-  const [ua, setUa] = useState(clients.length);
 
   useEffect(() => {
-    if (!payments?.length) {
-      getPayments();
-    }
-
-    if (!clients.length) {
-      getClients();
+    if (!analyticsData?.length) {
+      loadAnalytics();
     }
   }, []);
 
-  if (!clients.length || !payments?.length) {
+  if (!analyticsData?.length) {
     return <Loader />;
   }
 
-  // user = every person reached our product
-  // customer = a user which made a purchase
-  const customers = clients.filter((client) =>
-    client.leads.some((lead) => !!lead.payments?.length)
+  const aggregatedAnalytics = analyticsData.reduce(
+    (total, cur) => {
+      total.ua += cur.ua;
+      total.buyers += cur.buyers;
+      total.payments += cur.payments;
+      total.revenue += cur.revenue;
+      return total;
+    },
+    {
+      ua: 0,
+      buyers: 0,
+      payments: 0,
+      revenue: 0,
+    } as AnalyticsData
   );
 
-  const revenue = 0.01 * payments.reduce((sum, cur) => sum + cur.amount, 0);
-  const avp = revenue / payments.length;
-  const cpa = ac / ua;
-  const apc = payments.length / customers.length;
+  const revenue = 0.01 * aggregatedAnalytics.revenue;
+  const avp = revenue / aggregatedAnalytics.payments;
+  const cpa = ac / aggregatedAnalytics.ua;
+  const apc = aggregatedAnalytics.payments / aggregatedAnalytics.buyers;
   const arpc = (avp - cogs) * apc;
-  const c1 = customers.length / ua;
+  const c1 = aggregatedAnalytics.buyers / aggregatedAnalytics.ua;
   const arpu = arpc * c1;
-  const cm = ua * (arpu - cpa);
+  const cm = aggregatedAnalytics.ua * (arpu - cpa);
 
   return (
     <Box gap="large">
@@ -62,17 +68,14 @@ const UnitScreen = ({ clients, getClients, payments, getPayments }: IProps) => {
             onChange={(event) => setAc(Number(event.target.value))}
           />
         </FormField>
-        <FormField label="UA" help="User acquisition">
-          <TextInput
-            value={ua}
-            onChange={(event) => setUa(Number(event.target.value))}
-          />
-        </FormField>
       </Box>
       <Box align="start">
         <Text>Here's how your business behave</Text>
+        <FormField label="UA" help="User acquisition">
+          <Text margin="small">{aggregatedAnalytics.ua}</Text>
+        </FormField>
         <FormField label="B" help="Buyers">
-          <Text margin="small">{customers.length}</Text>
+          <Text margin="small">{aggregatedAnalytics.buyers}</Text>
         </FormField>
         <FormField label="C1" help="Convertion to first purchase">
           <Text margin="small">{(100 * c1).toFixed(3)}%</Text>

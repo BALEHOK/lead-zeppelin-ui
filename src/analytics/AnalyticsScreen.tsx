@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { TFunction } from 'src/common/lib/functionTypes';
-import { IPayment } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
 import { AnalyticsList } from './AnalyticsList';
+import { ChannelAnalyticsData } from './channelAnalyticsData';
 
 interface IProps {
-  analyticsData: IPayment[];
+  analyticsData: ChannelAnalyticsData[];
   loadAnalytics: TFunction;
 }
 
@@ -20,7 +20,7 @@ const AnalyticsScreen = ({ analyticsData, loadAnalytics }: IProps) => {
     return <div>Loading...</div>;
   }
 
-  return <AnalyticsList payments={analyticsData} />;
+  return <AnalyticsList analyticsData={analyticsData} />;
 };
 
 export default withContext(AnalyticsScreen);

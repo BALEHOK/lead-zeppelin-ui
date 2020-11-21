@@ -1,13 +1,14 @@
 import { DataTable, Text } from 'grommet';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
+import { ChannelAnalyticsData } from './channelAnalyticsData';
 
 interface IProps {
-  payments: any[];
+  analyticsData: ChannelAnalyticsData[];
 }
 
-export const AnalyticsList = ({ payments }: IProps) => (
-  <DataTable
+export const AnalyticsList = ({ analyticsData }: IProps) => (
+  <DataTable<ChannelAnalyticsData>
     className={useStyles().table}
     columns={[
       {
@@ -17,7 +18,7 @@ export const AnalyticsList = ({ payments }: IProps) => (
         size: 'large',
       },
       {
-        property: 'count',
+        property: 'ua',
         header: <Text>User acquisition</Text>,
       },
       {
@@ -30,7 +31,7 @@ export const AnalyticsList = ({ payments }: IProps) => (
         header: <Text>Revenue</Text>,
       },
     ]}
-    data={payments}
+    data={analyticsData}
     sortable
     pad={{ horizontal: 'large' }}
   />

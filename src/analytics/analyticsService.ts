@@ -1,5 +1,6 @@
 import { gqlApi } from 'src/common/api/clients';
 import { decodeChannel, emptyEncodedChannel } from 'src/common/lib/channelHash';
+import { ChannelAnalyticsData } from './channelAnalyticsData';
 
 export class AnalyticsService {
   async loadAnalytics(account: string) {
@@ -20,7 +21,7 @@ export class AnalyticsService {
       ],
     });
 
-    const channelData = {};
+    const channelData: { [channel: string]: ChannelAnalyticsData } = {};
     result.account.leads.forEach((lead) => {
       let leadChannelData = channelData[lead.channel];
 
@@ -39,15 +40,15 @@ export class AnalyticsService {
 
         leadChannelData = {
           channel: channelOrigin,
-          count: 0,
+          ua: 0,
           buyers: 0,
           payments: 0,
           revenue: 0,
-        };
+        } as ChannelAnalyticsData;
         channelData[lead.channel] = leadChannelData;
       }
 
-      leadChannelData.count++;
+      leadChannelData.ua++;
       if (lead.payments?.length) {
         leadChannelData.buyers++;
       }

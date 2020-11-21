@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChannelAnalyticsData } from 'src/analytics/channelAnalyticsData';
 import { AccountType } from '../api/graphql-zeus';
 import { TFunction, TFunction1 } from '../lib/functionTypes';
 
@@ -23,14 +24,6 @@ export interface ILead {
   campaign: string;
   content: string;
   funnelStep: IFunnelStep;
-  payments: IPayment[];
-}
-
-export interface IPayment {
-  id: string;
-  amount: number;
-  created: Date;
-  lead: ILead;
 }
 
 export interface IClient {
@@ -45,7 +38,7 @@ export interface IAppState {
   getClients: TFunction;
   funnels: IFunnel[];
   getFunnels: TFunction;
-  analyticsData: IPayment[];
+  analyticsData: ChannelAnalyticsData[];
   loadAnalytics: TFunction;
 }
 
