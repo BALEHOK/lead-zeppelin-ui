@@ -5,22 +5,22 @@ import { withContext } from 'src/common/state/withContext';
 import { AnalyticsList } from './AnalyticsList';
 
 interface IProps {
-  payments: IPayment[];
-  getPayments: TFunction;
+  analyticsData: IPayment[];
+  loadAnalytics: TFunction;
 }
 
-const AnalyticsScreen = ({ payments, getPayments }: IProps) => {
+const AnalyticsScreen = ({ analyticsData, loadAnalytics }: IProps) => {
   useEffect(() => {
-    if (!payments?.length) {
-      getPayments();
+    if (!analyticsData?.length) {
+      loadAnalytics();
     }
   }, []);
 
-  if (!payments?.length) {
+  if (!analyticsData?.length) {
     return <div>Loading...</div>;
   }
 
-  return <AnalyticsList payments={payments} />;
+  return <AnalyticsList payments={analyticsData} />;
 };
 
 export default withContext(AnalyticsScreen);

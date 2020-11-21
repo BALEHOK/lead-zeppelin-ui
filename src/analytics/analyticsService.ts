@@ -2,7 +2,7 @@ import { gqlApi } from 'src/common/api/clients';
 import { decodeChannel, emptyEncodedChannel } from 'src/common/lib/channelHash';
 
 export class AnalyticsService {
-  async getPayments(account: string) {
+  async loadAnalytics(account: string) {
     const result = await gqlApi.query({
       account: [
         {

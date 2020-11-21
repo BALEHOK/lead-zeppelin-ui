@@ -2,7 +2,7 @@ import { Box, Grommet } from 'grommet';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import accountService from 'src/account/accountService';
-import paymentService from 'src/analytics/analyticsService';
+import analyticsService from 'src/analytics/analyticsService';
 import clientService from 'src/clients/clientService';
 import { AccountType } from 'src/common/api/graphql-zeus';
 import { storage } from 'src/common/lib/storage';
@@ -36,9 +36,9 @@ export const App = () => {
     setFunnelsState(nextFunnels);
   };
 
-  const [payments, setPaymentsState] = useState([]);
-  const getPayments = async () => {
-    const nextPayments = await paymentService.getPayments(account.code);
+  const [analyticsData, setPaymentsState] = useState([]);
+  const loadAnalytics = async () => {
+    const nextPayments = await analyticsService.loadAnalytics(account.code);
     setPaymentsState(nextPayments);
   };
 
@@ -58,8 +58,8 @@ export const App = () => {
           getClients,
           funnels,
           getFunnels,
-          payments,
-          getPayments,
+          analyticsData,
+          loadAnalytics,
         }}
       >
         {loadingAccount && (

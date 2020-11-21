@@ -45,8 +45,8 @@ export interface IAppState {
   getClients: TFunction;
   funnels: IFunnel[];
   getFunnels: TFunction;
-  payments: IPayment[];
-  getPayments: TFunction;
+  analyticsData: IPayment[];
+  loadAnalytics: TFunction;
 }
 
 export const AppContext = React.createContext({} as IAppState);
