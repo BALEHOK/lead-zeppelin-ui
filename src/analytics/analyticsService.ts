@@ -17,9 +17,18 @@ export class AnalyticsService {
               amount: true,
             },
           },
+          channels: {
+            channel: true,
+            spendings: true,
+          },
         },
       ],
     });
+
+    const channelSpendings = result.account.channels.reduce((total, cur) => {
+      total[cur.channel] = cur;
+      return total;
+    }, {});
 
     const channelData: { [channel: string]: ChannelAnalyticsData } = {};
     result.account.leads.forEach((lead) => {
@@ -44,6 +53,7 @@ export class AnalyticsService {
           buyers: 0,
           payments: 0,
           revenue: 0,
+          ac: channelSpendings[lead.channel]?.spendings || 0,
         } as ChannelAnalyticsData;
         channelData[lead.channel] = leadChannelData;
       }

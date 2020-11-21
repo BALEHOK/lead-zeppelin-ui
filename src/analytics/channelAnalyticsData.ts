@@ -6,6 +6,8 @@ export interface AnalyticsData {
   /** Number of payments */
   payments: number;
   revenue: number;
+  /** acquisition cost */
+  ac: number;
 }
 
 export interface ChannelAnalyticsData extends AnalyticsData {

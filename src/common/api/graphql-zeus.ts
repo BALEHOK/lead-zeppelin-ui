@@ -10,6 +10,19 @@ export type ValueTypes = {
 	clients?:ValueTypes["ClientType"],
 	leads?:ValueTypes["LeadType"],
 	payments?:ValueTypes["PaymentType"],
+	channels?:ValueTypes["ChannelType"],
+		__typename?: true
+}>;
+	["ChannelInput"]: {
+	channel:string,
+	name?:string,
+	spendings?:number
+};
+	["ChannelType"]: AliasType<{
+	id?:true,
+	channel?:true,
+	name?:true,
+	spendings?:true,
 		__typename?: true
 }>;
 	["ClientType"]: AliasType<{
@@ -58,6 +71,7 @@ deleteAccount?: [{	id?:string},true],
 updateAccount?: [{	id?:string,	content?:string},ValueTypes["AccountType"]],
 createFunnel?: [{	accountId:string,	name:string},ValueTypes["FunnelType"]],
 createFunnelStep?: [{	funnelId:string,	code:string,	name:string},ValueTypes["FunnelType"]],
+updateChannel?: [{	accountId:string,	channelInfo:ValueTypes["ChannelInput"]},ValueTypes["ChannelType"]],
 		__typename?: true
 }>;
 	["PaymentType"]: AliasType<{
@@ -84,7 +98,20 @@ export type PartialObjects = {
 			funnels?:(PartialObjects["FunnelType"] | undefined)[],
 			clients?:(PartialObjects["ClientType"] | undefined)[],
 			leads?:(PartialObjects["LeadType"] | undefined)[],
-			payments?:(PartialObjects["PaymentType"] | undefined)[]
+			payments?:(PartialObjects["PaymentType"] | undefined)[],
+			channels?:(PartialObjects["ChannelType"] | undefined)[]
+	},
+	["ChannelInput"]: {
+	channel:string,
+	name?:string,
+	spendings?:number
+},
+	["ChannelType"]: {
+		__typename?: "ChannelType";
+			id?:string,
+			channel?:string,
+			name?:string,
+			spendings?:number
 	},
 	["ClientType"]: {
 		__typename?: "ClientType";
@@ -132,7 +159,8 @@ export type PartialObjects = {
 			deleteAccount?:string,
 			updateAccount?:PartialObjects["AccountType"],
 			createFunnel?:PartialObjects["FunnelType"],
-			createFunnelStep?:PartialObjects["FunnelType"]
+			createFunnelStep?:PartialObjects["FunnelType"],
+			updateChannel?:PartialObjects["ChannelType"]
 	},
 	["PaymentType"]: {
 		__typename?: "PaymentType";
@@ -159,7 +187,22 @@ export type AccountType = {
 	funnels?:(FunnelType | undefined)[],
 	clients?:(ClientType | undefined)[],
 	leads?:(LeadType | undefined)[],
-	payments?:(PaymentType | undefined)[]
+	payments?:(PaymentType | undefined)[],
+	channels?:(ChannelType | undefined)[]
+}
+
+export type ChannelInput = {
+		channel:string,
+	name?:string,
+	spendings?:number
+}
+
+export type ChannelType = {
+	__typename?: "ChannelType",
+	id?:string,
+	channel?:string,
+	name?:string,
+	spendings?:number
 }
 
 export type ClientType = {
@@ -212,7 +255,8 @@ export type Mutation = {
 	deleteAccount?:string,
 	updateAccount?:AccountType,
 	createFunnel?:FunnelType,
-	createFunnelStep?:FunnelType
+	createFunnelStep?:FunnelType,
+	updateChannel?:ChannelType
 }
 
 export type PaymentType = {
@@ -231,6 +275,26 @@ export type Query = {
 }
 
 export const AllTypesProps: Record<string,any> = {
+	ChannelInput:{
+		channel:{
+			type:"String",
+			array:false,
+			arrayRequired:false,
+			required:true
+		},
+		name:{
+			type:"String",
+			array:false,
+			arrayRequired:false,
+			required:false
+		},
+		spendings:{
+			type:"Int",
+			array:false,
+			arrayRequired:false,
+			required:false
+		}
+	},
 	Mutation:{
 		createAccount:{
 			code:{
@@ -301,6 +365,20 @@ export const AllTypesProps: Record<string,any> = {
 				arrayRequired:false,
 				required:true
 			}
+		},
+		updateChannel:{
+			accountId:{
+				type:"String",
+				array:false,
+				arrayRequired:false,
+				required:true
+			},
+			channelInfo:{
+				type:"ChannelInput",
+				array:false,
+				arrayRequired:false,
+				required:true
+			}
 		}
 	},
 	Query:{
@@ -331,7 +409,14 @@ export const ReturnTypes: Record<string,any> = {
 		funnels:"FunnelType",
 		clients:"ClientType",
 		leads:"LeadType",
-		payments:"PaymentType"
+		payments:"PaymentType",
+		channels:"ChannelType"
+	},
+	ChannelType:{
+		id:"String",
+		channel:"String",
+		name:"String",
+		spendings:"Int"
 	},
 	ClientType:{
 		id:"String",
@@ -374,7 +459,8 @@ export const ReturnTypes: Record<string,any> = {
 		deleteAccount:"ID",
 		updateAccount:"AccountType",
 		createFunnel:"FunnelType",
-		createFunnelStep:"FunnelType"
+		createFunnelStep:"FunnelType",
+		updateChannel:"ChannelType"
 	},
 	PaymentType:{
 		id:"String",
@@ -399,6 +485,18 @@ export class GraphQLError extends Error {
     }
   }
 
+
+
+export type UnwrapPromise<T> = T extends Promise<infer R> ? R : T;
+export type ZeusState<T extends (...args: any[]) => Promise<any>> = NonNullable<
+  UnwrapPromise<ReturnType<T>>
+>;
+export type ZeusHook<
+  T extends (
+    ...args: any[]
+  ) => Record<string, (...args: any[]) => Promise<any>>,
+  N extends keyof ReturnType<T>
+> = ZeusState<ReturnType<T>[N]>;
 
 type Func<P extends any[], R> = (...args: P) => R;
 type AnyFunc = Func<any, any>;

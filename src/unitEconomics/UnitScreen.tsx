@@ -15,7 +15,7 @@ interface IProps {
 
 const UnitScreen = ({ analyticsData, loadAnalytics }: IProps) => {
   const [cogs, setCogs] = useState(0);
-  const [ac, setAc] = useState(0);
+  const [ac, setAc] = useState<number>(0);
 
   useEffect(() => {
     if (!analyticsData?.length) {
@@ -23,16 +23,13 @@ const UnitScreen = ({ analyticsData, loadAnalytics }: IProps) => {
     }
   }, []);
 
-  if (!analyticsData?.length) {
-    return <Loader />;
-  }
-
-  const aggregatedAnalytics = analyticsData.reduce(
+  const aggregatedAnalytics = (analyticsData || []).reduce(
     (total, cur) => {
       total.ua += cur.ua;
       total.buyers += cur.buyers;
       total.payments += cur.payments;
       total.revenue += cur.revenue;
+      total.ac += cur.ac;
       return total;
     },
     {
@@ -40,8 +37,17 @@ const UnitScreen = ({ analyticsData, loadAnalytics }: IProps) => {
       buyers: 0,
       payments: 0,
       revenue: 0,
+      ac: 0,
     } as AnalyticsData
   );
+
+  useEffect(() => {
+    aggregatedAnalytics?.ac && setAc(0.01 * aggregatedAnalytics.ac);
+  }, [analyticsData]);
+
+  if (!analyticsData?.length) {
+    return <Loader />;
+  }
 
   const revenue = 0.01 * aggregatedAnalytics.revenue;
   const avp = revenue / aggregatedAnalytics.payments;

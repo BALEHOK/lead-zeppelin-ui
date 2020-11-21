@@ -1,6 +1,7 @@
 import { DataTable, Text } from 'grommet';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
+import { fromCentsToDollars } from 'src/common/fromCentsToDollars';
 import { ChannelAnalyticsData } from './channelAnalyticsData';
 
 interface IProps {
@@ -27,8 +28,13 @@ export const AnalyticsList = ({ analyticsData }: IProps) => (
       },
       {
         property: 'revenue',
-        render: (channelPayment) => (channelPayment.revenue / 100).toFixed(2),
+        render: (channelPayment) => fromCentsToDollars(channelPayment.revenue),
         header: <Text>Revenue</Text>,
+      },
+      {
+        property: 'ac',
+        render: (channelPayment) => fromCentsToDollars(channelPayment.ac),
+        header: <Text>Acquisition cost</Text>,
       },
     ]}
     data={analyticsData}
