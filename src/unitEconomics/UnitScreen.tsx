@@ -94,4 +94,4 @@ const UnitScreen = ({ clients, getClients, payments, getPayments }: IProps) => {
   );
 };
 
-export default withContext(UnitScreen);
+export default withContext(UnitScreen as any);
