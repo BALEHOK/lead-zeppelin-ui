@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router-dom';
 import AnalyticsScreen from 'src/analytics/AnalyticsScreen';
+import { getAuthCode } from 'src/auth/auth';
 import { IAppState } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
 import { Dashboard } from 'src/dashboard/DashboardScreen';
@@ -57,6 +58,7 @@ export const MainLayout = ({ account }: IAppState) => {
             icon={<Optimize />}
             label={t('mainMenu.unit')}
           />
+          <button onClick={() => getAuthCode('yandex')}>Yandex</button>
         </Nav>
       </Sidebar>
       <Box pad="medium" overflow="auto" className={styles.content}>
