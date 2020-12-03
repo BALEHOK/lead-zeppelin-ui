@@ -17,6 +17,12 @@ import SidebarItem from './SidebarItem';
 export const MainLayout = ({ account }: IAppState) => {
   const { t } = useTranslation();
 
+  const authenticate = async () => {
+    const authData = await getAuthCode('yandex');
+    // eslint-disable-next-line no-console
+    console.log('got auth', authData);
+  };
+
   return (
     <Box direction="row" height={{ min: '100%' }}>
       <Sidebar
@@ -58,7 +64,7 @@ export const MainLayout = ({ account }: IAppState) => {
             icon={<Optimize />}
             label={t('mainMenu.unit')}
           />
-          <button onClick={() => getAuthCode('yandex')}>Yandex</button>
+          <button onClick={authenticate}>Yandex</button>
         </Nav>
       </Sidebar>
       <Box pad="medium" overflow="auto" className={styles.content}>

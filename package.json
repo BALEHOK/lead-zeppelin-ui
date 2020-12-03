@@ -75,6 +75,7 @@
       "simple-import-sort"
     ],
     "rules": {
+      "no-console": "error",
       "react-hooks/exhaustive-deps": 0,
       "simple-import-sort/sort": "off"
     }

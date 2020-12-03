@@ -62,18 +62,34 @@
           return location.origin + '/';
         }
 
-        var params = parseQuerystring(location.search.slice(1));
-        // using 2 query params to ensure callback from auth server
-        if (params.state && (params.code || params.error_code)) {
-          if (params.code) {
-            window.opener.postMessage(
-              { authMessage: true, code: params.code, state: params.state },
-              buildRedirectUri()
-            );
+        if (location.search) {
+          var params = parseQuerystring(location.search.slice(1));
+          // using 2 query params to ensure callback from auth server
+          if (params.state && (params.code || params.error_code)) {
+            if (params.code) {
+              window.opener.postMessage(
+                { authMessage: true, code: params.code, state: params.state },
+                buildRedirectUri()
+              );
+            }
           }
-          window.close();
-          return;
+        } else if (location.hash) {
+          var params = parseQuerystring(location.hash.slice(1));
+          if (params.state && (params.access_token || params.error)) {
+            if (params.access_token) {
+              window.opener.postMessage(
+                {
+                  authMessage: true,
+                  access_token: params.access_token,
+                  state: params.state,
+                },
+                buildRedirectUri()
+              );
+            }
+          }
         }
+
+        window.close();
       })();
     </script>
   </body>

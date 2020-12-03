@@ -18,8 +18,9 @@ import { v4 as uuid } from 'uuid';
 declare let window: any;
 
 export type SocialProvider = 'yandex' | 'facebook';
-export interface CodeResponse {
+export interface OAuthResponse {
   code: string;
+  accessToken: string;
   redirectUri: string;
 }
 
@@ -27,6 +28,7 @@ interface Config {
   provider: SocialProvider;
   clientId: string;
   authorization: string;
+  responseType: string;
   scopes: string;
 }
 
@@ -40,13 +42,15 @@ const yandexConfig: Config = {
   provider: 'yandex',
   clientId: process.env.REACT_APP_YANDEX_APP_ID,
   authorization: 'https://oauth.yandex.ru/authorize',
+  responseType: 'token',
   scopes: 'login:email',
 };
 
 const fbConfig: Config = {
   provider: 'facebook',
-  clientId: process.env.FB_APP_ID as any,
+  clientId: process.env.REACT_APP_FB_APP_ID as any,
   authorization: 'https://www.facebook.com/v8.0/dialog/oauth',
+  responseType: 'code',
   scopes: 'email',
 };
 
@@ -54,12 +58,12 @@ const configs = {
   yandex: yandexConfig,
 };
 
-let authPromise: Promise<CodeResponse>;
-let resolveAuthPromise: TFunction1<CodeResponse>;
+let authPromise: Promise<OAuthResponse>;
+let resolveAuthPromise: TFunction1<OAuthResponse>;
 let rejectAuthPromise: TFunction1<string>;
 let state: string;
 
-export function getAuthCode(provider: SocialProvider): Promise<CodeResponse> {
+export function getAuthCode(provider: SocialProvider): Promise<OAuthResponse> {
   const config = configs[provider];
   if (!config) {
     return Promise.reject(null);
@@ -80,11 +84,11 @@ export function getAuthCode(provider: SocialProvider): Promise<CodeResponse> {
   const redirectUri = buildRedirectUri();
 
   // this is the copmlete authorizarion code link
-  const authLink = `${
-    config.authorization
-  }?response_type=code&state=${state}&redirect_uri=${encodeURIComponent(
-    redirectUri
-  )}&scope=${config.scopes}&client_id=${config.clientId}`;
+  const authLink = `${config.authorization}?response_type=${
+    config.responseType
+  }&state=${state}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${
+    config.scopes
+  }&client_id=${config.clientId}`;
 
   // eslint-disable-next-line no-console
   debug && console.log('opening auth window', authLink);
@@ -109,7 +113,7 @@ function onMessage({ data, origin }) {
     redirectUri.indexOf(origin) !== 0 || // same origin only
     !(authPromise && resolveAuthPromise) || // nothing has interrupted the auth request and the subject is ready
     data.state !== state ||
-    !data.code
+    !(data.code || data.access_token)
   ) {
     rejectAuthPromise && rejectAuthPromise('auth was interrupted');
     authPromise = null;
@@ -120,9 +124,13 @@ function onMessage({ data, origin }) {
   }
 
   // eslint-disable-next-line no-console
-  debug && console.log('got the code', data.code);
+  debug && console.log('got the access', data.code, data.access_token);
 
-  resolveAuthPromise({ code: data.code, redirectUri });
+  resolveAuthPromise({
+    code: data.code,
+    accessToken: data.access_token,
+    redirectUri,
+  });
   authPromise = null;
   resolveAuthPromise = null;
   rejectAuthPromise = null;
