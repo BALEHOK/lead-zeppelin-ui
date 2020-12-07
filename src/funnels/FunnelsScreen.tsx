@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
+import { FunnelType } from 'src/common/api/graphql-zeus';
 import { TFunction } from 'src/common/lib/functionTypes';
-import { IFunnel } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
 import FunnelView from './Funnels';
 
 interface IProps {
-  funnels: IFunnel[];
+  funnels: FunnelType[];
   getFunnels: TFunction;
 }
 

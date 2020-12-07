@@ -4,7 +4,6 @@ import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import accountService from 'src/account/accountService';
 import analyticsService from 'src/analytics/analyticsService';
 import { authService } from 'src/auth/authService';
-import clientService from 'src/clients/clientService';
 import { AccountType } from 'src/common/api/graphql-zeus';
 import { AppContext } from 'src/common/state/appContext';
 import funnelService from 'src/funnels/funnelService';
@@ -50,12 +49,6 @@ export const App = () => {
     setPaymentsState(nextPayments);
   };
 
-  const [clients, setClientsState] = useState([]);
-  const getClients = async () => {
-    const nextClients = await clientService.getClients(account.code);
-    setClientsState(nextClients);
-  };
-
   const updateChannelAc = async (channel: string, ac: number) => {
     const success = await analyticsService.updateChannelAc(
       account.id,
@@ -73,8 +66,6 @@ export const App = () => {
         value={{
           account,
           setAccount: setAccountState,
-          clients,
-          getClients,
           funnels,
           getFunnels,
           analyticsData,

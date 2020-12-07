@@ -1,9 +1,9 @@
 import { Box, List, Select, Text } from 'grommet';
 import React, { useState } from 'react';
-import { IFunnel } from 'src/common/state/appContext';
+import { FunnelType } from 'src/common/api/graphql-zeus';
 
 interface IProps {
-  funnels: IFunnel[];
+  funnels: FunnelType[];
 }
 
 export const Funnels = ({ funnels }: IProps) => {
