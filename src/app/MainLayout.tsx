@@ -4,7 +4,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router-dom';
 import AnalyticsScreen from 'src/analytics/AnalyticsScreen';
-import { getAuthCode } from 'src/auth/auth';
 import { IAppState } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
 import { Dashboard } from 'src/dashboard/DashboardScreen';
@@ -16,12 +15,6 @@ import SidebarItem from './SidebarItem';
 
 export const MainLayout = ({ account }: IAppState) => {
   const { t } = useTranslation();
-
-  const authenticate = async () => {
-    const authData = await getAuthCode('yandex');
-    // eslint-disable-next-line no-console
-    console.log('got auth', authData);
-  };
 
   return (
     <Box direction="row" height={{ min: '100%' }}>
@@ -64,7 +57,6 @@ export const MainLayout = ({ account }: IAppState) => {
             icon={<Optimize />}
             label={t('mainMenu.unit')}
           />
-          <button onClick={authenticate}>Yandex</button>
         </Nav>
       </Sidebar>
       <Box pad="medium" overflow="auto" className={styles.content}>

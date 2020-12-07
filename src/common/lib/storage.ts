@@ -1,4 +1,9 @@
-export class Storage {
+export interface IStorage {
+  set(key: string, value: string);
+  get(key: string): any;
+}
+
+export class Storage implements IStorage {
   set(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value));
   }

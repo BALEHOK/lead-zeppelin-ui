@@ -1,54 +1,38 @@
-import { Box, Button, Form, Text, TextInput } from 'grommet';
+import { Box, Button } from 'grommet';
 import React, { useState } from 'react';
-import accountService from 'src/account/accountService';
-import { storage } from 'src/common/lib/storage';
-import { IAppState } from '../common/state/appContext';
-import { withContext } from '../common/state/withContext';
+import { useHistory } from 'react-router-dom';
+import { authService } from 'src/auth/authService';
 import styles from './LoginPage.module.scss';
+import { routes } from './routes';
 
-export const LoginPage = ({ setAccount }: IAppState) => {
+export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const history = useHistory();
 
-  const loadAccount = async ({
-    value: { accountCode },
-  }: {
-    value: { accountCode: string };
-  }) => {
-    setLoading(true);
-    setError(null);
-    let account;
+  const authenticate = async () => {
     try {
-      account = await accountService.getAccount(accountCode);
+      await authService.login('yandex');
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log('failed to log in', e);
+      return;
     } finally {
       setLoading(false);
-      if (account) {
-        storage.set('lz_account', account.code);
-        setAccount(account);
-        setError(null);
-        return;
-      }
-      setError('Account not found');
     }
+
+    history.push(routes.dashboard);
   };
 
   return (
     <Box className={styles.root}>
-      <Form onSubmit={loadAccount as any}>
-        <Box gap="medium">
-          <TextInput
-            name="accountCode"
-            placeholder="Account code"
-            color="white"
-            disabled={loading}
-          />
-          <Button type="submit" primary label="Enter" disabled={loading} />
-          {loading && <Text>Loading account info...</Text>}
-          {error && !loading && <Text>{error}</Text>}
-        </Box>
-      </Form>
+      <Button
+        primary
+        label="Login with Yandex"
+        disabled={loading}
+        onClick={authenticate}
+      />
     </Box>
   );
 };
 
-export default withContext(LoginPage);
+export default LoginPage;

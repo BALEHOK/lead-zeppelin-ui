@@ -1,34 +1,42 @@
 import { Box, Grommet } from 'grommet';
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import accountService from 'src/account/accountService';
 import analyticsService from 'src/analytics/analyticsService';
+import { authService } from 'src/auth/authService';
 import clientService from 'src/clients/clientService';
 import { AccountType } from 'src/common/api/graphql-zeus';
-import { storage } from 'src/common/lib/storage';
 import { AppContext } from 'src/common/state/appContext';
 import funnelService from 'src/funnels/funnelService';
 import Loader from 'src/uiKit/loader/Loader';
 import LoginPage from './LoginPage';
 import MainLayout from './MainLayout';
+import { routes } from './routes';
 import { theme } from './theme';
 
 export const App = () => {
   const [account, setAccountState] = useState(null as AccountType);
   const [loadingAccount, setLoadingAccount] = useState(false);
+  const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!account) {
-      const accountCode = storage.get('lz_account');
-      if (accountCode) {
-        setLoadingAccount(true);
-        accountService.getAccount(accountCode).then((a) => {
-          setAccountState(a);
-          setLoadingAccount(false);
-        });
-      }
+    const token = authService.getToken();
+    if (!token) {
+      location.pathname !== routes.login && history.push(routes.login);
+      return;
     }
-  }, []);
+
+    if (!account) {
+      setLoadingAccount(true);
+      accountService.getAccounts().then((accounts) => {
+        const account = accounts?.length ? accounts[0] : null;
+
+        setAccountState(account);
+        setLoadingAccount(false);
+      });
+    }
+  }, [location.pathname]);
 
   const [funnels, setFunnelsState] = useState([]);
   const getFunnels = async () => {
@@ -79,14 +87,18 @@ export const App = () => {
             <Loader />
           </Box>
         )}
-        {!loadingAccount &&
-          (account ? (
-            <BrowserRouter>
-              <MainLayout />
-            </BrowserRouter>
-          ) : (
-            <LoginPage />
-          ))}
+        {!loadingAccount && (
+          <Switch>
+            <Route path={routes.login}>
+              <LoginPage />
+            </Route>
+            {account && (
+              <Route>
+                <MainLayout />
+              </Route>
+            )}
+          </Switch>
+        )}
       </AppContext.Provider>
     </Grommet>
   );

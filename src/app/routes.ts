@@ -1,6 +1,7 @@
 export const routes = {
+  analytics: '/analytics',
   dashboard: '/',
   funnels: '/funnels',
-  analytics: '/analytics',
+  login: '/login',
   unitEconomics: '/unit',
 };
