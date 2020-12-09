@@ -4,4 +4,5 @@ export const routes = {
   funnels: '/funnels',
   login: '/login',
   unitEconomics: '/unit',
+  integrations: '/integrations',
 };

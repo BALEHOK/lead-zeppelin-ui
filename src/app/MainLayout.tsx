@@ -1,5 +1,12 @@
 import { Avatar, Box, Button, Nav, Sidebar, Text } from 'grommet';
-import { Diamond, Filter, Help, Optimize, Projects } from 'grommet-icons';
+import {
+  Diamond,
+  Filter,
+  Help,
+  Integration,
+  Optimize,
+  Projects,
+} from 'grommet-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router-dom';
@@ -8,6 +15,7 @@ import { IAppState } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
 import { Dashboard } from 'src/dashboard/DashboardScreen';
 import FunnelScreen from 'src/funnels/FunnelsScreen';
+import IntegrationsScreen from 'src/integrations/IntegrationsScreen';
 import UnitScreen from 'src/unitEconomics/UnitScreen';
 import styles from './MainLayout.module.scss';
 import { routes } from './routes';
@@ -57,6 +65,11 @@ export const MainLayout = ({ account }: IAppState) => {
             icon={<Optimize />}
             label={t('mainMenu.unit')}
           />
+          <SidebarItem
+            to={routes.integrations}
+            icon={<Integration />}
+            label={t('mainMenu.integrations')}
+          />
         </Nav>
       </Sidebar>
       <Box pad="medium" overflow="auto" className={styles.content}>
@@ -72,6 +85,9 @@ export const MainLayout = ({ account }: IAppState) => {
           </Route>
           <Route path={routes.unitEconomics}>
             <UnitScreen />
+          </Route>
+          <Route path={routes.integrations}>
+            <IntegrationsScreen />
           </Route>
         </Switch>
       </Box>

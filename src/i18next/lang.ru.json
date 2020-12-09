@@ -1,10 +1,20 @@
 {
   "translation": {
+    "general": {
+      "copy": "Копировать"
+    },
     "mainMenu": {
       "dashboard": "Сводка",
       "funnels": "Воронки",
       "analytics": "Аналитика",
-      "unit": "Юнит анализ"
+      "unit": "Юнит анализ",
+      "integrations": "Интеграции"
+    },
+    "integrations": {
+      "scriptHeading": "Таг script",
+      "scriptSub": "Для интеграции на веб сайте. Скопируйте таг script и вставьте его в исходный код страницы вашего сайта.",
+      "linksHeading": "Генератор ссылок",
+      "linksSub": "Здесь легко генерировать ссылки с UTM метками."
     }
   }
 }
