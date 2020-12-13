@@ -4,6 +4,7 @@ import React, { MutableRefObject, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IAppState } from 'src/common/state/appContext';
 import { withContext } from 'src/common/state/withContext';
+import { LinkForANewTab } from 'src/uiKit/linkForANewTab';
 import { Section } from 'src/uiKit/section';
 
 export const IntegrationsScreen = ({ account }: IAppState) => {
@@ -19,7 +20,7 @@ export const IntegrationsScreen = ({ account }: IAppState) => {
   const linkRef = useRef<HTMLInputElement>();
 
   const buildSctipt = () => {
-    return `<script src="https://lead-zeppelin-server-v2.herokuapp.com/tracking.js?code=${account.code}"></script>`;
+    return `<script src="${process.env.REACT_APP_API_URL}/tracking.js?code=${account.code}" defer></script>`;
   };
 
   const buildUrl = () => {
@@ -79,6 +80,11 @@ export const IntegrationsScreen = ({ account }: IAppState) => {
             onClick={() => copyValue(scriptRef)}
           />
         </Box>
+        <LinkForANewTab
+          href={`${process.env.REACT_APP_DOCS_URL}/integrations/tilda`}
+        >
+          {t('integrations.scriptHelp')}
+        </LinkForANewTab>
       </Section>
 
       <Section
