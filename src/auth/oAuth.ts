@@ -46,6 +46,7 @@ const yandexConfig: Config = {
   scopes: 'login:email',
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fbConfig: Config = {
   provider: 'facebook',
   clientId: process.env.REACT_APP_FB_APP_ID as any,

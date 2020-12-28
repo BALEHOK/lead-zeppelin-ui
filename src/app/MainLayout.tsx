@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Nav, Sidebar, Text } from 'grommet';
+import { Avatar, Box, Nav, Sidebar, Text } from 'grommet';
 import {
   Diamond,
   Filter,
@@ -9,6 +9,7 @@ import {
 } from 'grommet-icons';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
 import AnalyticsScreen from 'src/analytics/AnalyticsScreen';
 import { IAppState } from 'src/common/state/appContext';
@@ -16,13 +17,15 @@ import { withContext } from 'src/common/state/withContext';
 import { Dashboard } from 'src/dashboard/DashboardScreen';
 import FunnelScreen from 'src/funnels/FunnelsScreen';
 import IntegrationsScreen from 'src/integrations/IntegrationsScreen';
+import { LinkForANewTab } from 'src/uiKit/linkForANewTab';
 import UnitScreen from 'src/unitEconomics/UnitScreen';
-import styles from './MainLayout.module.scss';
 import { routes } from './routes';
 import SidebarItem from './SidebarItem';
+import { theme } from './theme';
 
 export const MainLayout = ({ account }: IAppState) => {
   const { t } = useTranslation();
+  const styles = useStyles();
 
   return (
     <Box direction="row" height={{ min: '100%' }}>
@@ -35,13 +38,14 @@ export const MainLayout = ({ account }: IAppState) => {
           </Box>
         }
         footer={
-          <Button
-            icon={<Help />}
-            hoverIndicator
-            plain
-            gap="medium"
-            label="Help"
-          />
+          <LinkForANewTab
+            href={process.env.REACT_APP_DOCS_URL}
+            className={styles.helpLink}
+          >
+            <Help />
+            <div className={styles.gap} />
+            {t('mainMenu.help')}
+          </LinkForANewTab>
         }
       >
         <Nav gap="small">
@@ -94,5 +98,31 @@ export const MainLayout = ({ account }: IAppState) => {
     </Box>
   );
 };
+
+const useStyles = createUseStyles({
+  sidebar: {
+    'border-right': '1px solid white',
+  },
+  content: {
+    flex: '1',
+    'min-height': '100vh',
+    display: 'flex',
+    'flex-direction': 'column',
+    color: theme.global.colors.text,
+  },
+  helpLink: {
+    'text-decoration': 'none',
+    display: 'flex',
+    'align-items': 'center',
+    padding: '7px',
+    'justify-content': 'flex-start',
+    '&:hover': {
+      'box-shadow': `inset 0 0 3px ${theme.global.colors.focus}`,
+    },
+  },
+  gap: {
+    width: '24px',
+  },
+});
 
 export default withContext(MainLayout);

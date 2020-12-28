@@ -8,7 +8,8 @@
       "funnels": "Воронки",
       "analytics": "Аналитика",
       "unit": "Юнит анализ",
-      "integrations": "Интеграции"
+      "integrations": "Интеграции",
+      "help": "Помощь"
     },
     "integrations": {
       "scriptHeading": "Таг script",
