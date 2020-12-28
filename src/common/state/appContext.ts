@@ -4,6 +4,7 @@ import { AccountType, FunnelType } from '../api/graphql-zeus';
 import { TFunction, TFunction1 } from '../lib/functionTypes';
 
 export interface IAppState {
+  accounts: AccountType[];
   account: AccountType;
   setAccount: TFunction1<AccountType>;
   funnels: FunnelType[];

@@ -1,4 +1,4 @@
-import { Avatar, Box, Nav, Sidebar, Text } from 'grommet';
+import { Box, Nav, Sidebar } from 'grommet';
 import {
   Diamond,
   Filter,
@@ -7,7 +7,6 @@ import {
   Optimize,
   Projects,
 } from 'grommet-icons';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Route, Switch } from 'react-router-dom';
@@ -19,11 +18,12 @@ import FunnelScreen from 'src/funnels/FunnelsScreen';
 import IntegrationsScreen from 'src/integrations/IntegrationsScreen';
 import { LinkForANewTab } from 'src/uiKit/linkForANewTab';
 import UnitScreen from 'src/unitEconomics/UnitScreen';
+import { AccountSelector } from './accountSelector/accountSelector';
 import { routes } from './routes';
 import SidebarItem from './SidebarItem';
 import { theme } from './theme';
 
-export const MainLayout = ({ account }: IAppState) => {
+export const MainLayout = ({ account, accounts, setAccount }: IAppState) => {
   const { t } = useTranslation();
   const styles = useStyles();
 
@@ -32,10 +32,11 @@ export const MainLayout = ({ account }: IAppState) => {
       <Sidebar
         className={styles.sidebar}
         header={
-          <Box direction="row" gap="small" align="center">
-            <Avatar src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80" />
-            <Text>{account.name}</Text>
-          </Box>
+          <AccountSelector
+            account={account}
+            accounts={accounts}
+            setAccount={setAccount}
+          />
         }
         footer={
           <LinkForANewTab

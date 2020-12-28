@@ -1,5 +1,5 @@
 import { Box, Grommet } from 'grommet';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import accountService from 'src/account/accountService';
 import analyticsService from 'src/analytics/analyticsService';
@@ -14,8 +14,9 @@ import { routes } from './routes';
 import { theme } from './theme';
 
 export const App = () => {
+  const [accounts, setAccounts] = useState<Array<AccountType>>([]);
   const [account, setAccountState] = useState(null as AccountType);
-  const [loadingAccount, setLoadingAccount] = useState(false);
+  const [loadingAccounts, setLoadingAccounts] = useState(false);
   const history = useHistory();
   const location = useLocation();
 
@@ -27,12 +28,13 @@ export const App = () => {
     }
 
     if (!account) {
-      setLoadingAccount(true);
+      setLoadingAccounts(true);
       accountService.getAccounts().then((accounts) => {
+        setAccounts(accounts);
         const account = accounts?.length ? accounts[0] : null;
 
         setAccountState(account);
-        setLoadingAccount(false);
+        setLoadingAccounts(false);
       });
     }
   }, [location.pathname]);
@@ -43,10 +45,10 @@ export const App = () => {
     setFunnelsState(nextFunnels);
   };
 
-  const [analyticsData, setPaymentsState] = useState([]);
+  const [analyticsData, setAnalyticsState] = useState([]);
   const loadAnalytics = async () => {
     const nextPayments = await analyticsService.loadAnalytics(account.code);
-    setPaymentsState(nextPayments);
+    setAnalyticsState(nextPayments);
   };
 
   const updateChannelAc = async (channel: string, ac: number) => {
@@ -60,12 +62,19 @@ export const App = () => {
     }
   };
 
+  const setAccount = (selectedAccount: AccountType) => {
+    setFunnelsState([]);
+    setAnalyticsState([]);
+    setAccountState(selectedAccount);
+  };
+
   return (
     <Grommet theme={theme} full>
       <AppContext.Provider
         value={{
+          accounts,
           account,
-          setAccount: setAccountState,
+          setAccount,
           funnels,
           getFunnels,
           analyticsData,
@@ -73,12 +82,12 @@ export const App = () => {
           updateChannelAc,
         }}
       >
-        {loadingAccount && (
+        {loadingAccounts && (
           <Box height="100%" width="100%" align="center" justify="center">
             <Loader />
           </Box>
         )}
-        {!loadingAccount && (
+        {!loadingAccounts && (
           <Switch>
             <Route path={routes.login}>
               <LoginPage />
