@@ -5,7 +5,7 @@
   "dependencies": {
     "@nivo/pie": "^0.62.0",
     "axios": "^0.20.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "graphql": "^15.0.0",
     "graphql-zeus": "^2.8.5",
     "grommet": "^2.15.0",
